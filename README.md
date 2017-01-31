@@ -4,4 +4,13 @@ Artfair.lol is an anonymous photogram that allows only contributions made on-sit
 
 Made by interglobal.vision in Mexico City.
 
-#nofilter
+\#nofilter
+
+## Run
+
+```
+git clone git@github.com:interglobalvision/artfair-lol.git
+cd artfair-lol/app
+meteor npm install
+meteor run
+```
