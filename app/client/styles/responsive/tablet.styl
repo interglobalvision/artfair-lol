@@ -1,0 +1,30 @@
+$header-height = 81px
+$footer-height = 90px
+
+p
+  max-width: 600px
+
+.button
+  padding: $margin-small
+  min-height: 75px
+  &.button-small
+    min-height: 0
+    padding: 4px 7px
+
+input, textarea
+  border-right: $border
+  border-left: $border
+  border-color: $color-grey-light
+
+.logo
+  max-height: 42px
+
+#about
+  .logo
+    margin: 0 $margin-tiny
+
+#main-content
+  min-height: calc('100vh - ' + ($header-height + $footer-height))
+
+.comment-textarea
+  padding: $margin-small $margin-tiny
