@@ -1,0 +1,215 @@
+  // styl property ordering: https://github.com/rossPatton/stylint/blob/master/src/data/ordering.json
+
+@import 'nib'
+@import 'helpers'
+
+// ******************************************************
+
+// RESETS
+
+global-reset()
+
+// ******************************************************
+
+// VARIABLES
+
+$color-black = rgb(0, 0, 0)
+$color-white = rgb(255, 255, 255)
+$color-grey = rgb(150, 150, 150)
+$color-grey-light = rgb(220, 220, 220)
+
+$border-width = 1px
+$border-radius = 5px
+$border = $border-width solid
+
+// ******************************************************
+
+// GRID
+
+@import 'grid'
+
+// ******************************************************
+
+// TYPOGRAPHY
+
+@import 'type'
+
+// ******************************************************
+
+// BASIC
+
+html
+  background-color: $color-grey-light
+  color: $color-black
+
+img
+  max-width: 100%
+  height: auto
+
+.mobile-only
+  display: initial !important
+
+.desktop-only
+  display: none !important
+
+.button
+  appearance: none
+  background-color: $color-black
+  color: $color-white
+  border-radius: $border-radius
+  border: 0
+  cursor: pointer
+  text-align: center
+  line-height: 1
+  width: 100%
+  max-width: 500px
+  height: 100%
+  &:hover
+    opacity: .8
+  &.button-small
+    display: inline-block
+    width: auto
+    height: auto
+  &:disabled
+    opacity: .3
+  &#camera-button
+    border-radius: 75px
+    width: 75px
+    height: 75px
+    border: 2px solid $color-white
+
+input, textarea
+  appearance: none
+  border: 0
+  background: $color-white
+  border-radius: 0
+  resize: none
+  display: block
+
+.border-bottom-grey
+  border-bottom: $border
+  border-bottom-color: $color-grey-light
+
+// ******************************************************
+
+// ABOUT
+
+#about
+  background-color: $color-black
+  color: $color-white
+
+// ******************************************************
+
+// HEADER
+
+#header
+  width: 100%
+  background-color: $color-white
+  box-shadow: 0 3px 5px $color-grey
+  position: relative
+  z-index: 900
+
+// ******************************************************
+
+#main-content
+  background-color: $color-white
+  &.camera
+    background-color: $color-black
+
+// POST
+
+.post
+  background-color: $color-white
+
+.post-image
+  display: block
+  margin: 0 auto
+  width: 100%
+
+.comment-textarea
+  width: 100%
+  min-height: 200px
+
+// CAMERA
+
+#camera-frame
+  width: 100%
+  height: 300px
+  background-color: $color-white
+
+// ******************************************************
+
+// FOOTER
+
+#footer
+  background-color: $color-white
+
+#spinner
+  &.spin
+    animation: spinner 2s infinite ease-in-out
+
+@keyframes spinner
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(2880deg)
+
+// ******************************************************
+
+// MEDIA QUERIES
+
+$gutter = 18px
+
+$margin-micro = ($gutter * .3)
+$margin-tiny = ($gutter * .5)
+$margin-small = $gutter
+$margin-basic = ($gutter * 2)
+
+space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic)
+
+grid(100%, $gutter, s)
+
+$font-size-small = 11px
+$font-size-basic = 14px
+$font-size-mid = 18px
+$font-size-large = 24px
+
+font-sizes($font-size-basic, false, $font-size-large, $font-size-mid, $font-size-small)
+
+@import 'responsive/mobile'
+
+@media screen and (min-width: 720px)
+
+  $gutter = 24px
+
+  $margin-micro = ($gutter * .3)
+  $margin-tiny = ($gutter * .5)
+  $margin-small = $gutter
+  $margin-basic = ($gutter * 2)
+
+  space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic)
+
+  grid(680px, $gutter, m)
+
+  $font-size-small = 13px
+  $font-size-basic = 16px
+  $font-size-mid = 21px
+  $font-size-large = 24px
+
+  font-sizes($font-size-basic, false, $font-size-large, $font-size-mid, $font-size-small)
+
+  .mobile-only
+    display: none !important
+
+  @import 'responsive/tablet'
+
+@media screen and (min-width: 1024px)
+
+  $gutter = 24px
+
+  grid(800px, $gutter, l)
+
+  .desktop-only
+    display: initial !important
+
+  @import 'responsive/desktop'

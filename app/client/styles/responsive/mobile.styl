@@ -1,0 +1,31 @@
+$header-height = 69px
+$footer-height = 74px
+
+p
+  max-width: 520px
+
+.button
+  padding: $margin-small
+  min-height: 62px
+  &.button-small
+    min-height: 0
+    padding: 4px 6px
+
+.icon
+  max-height: 28px
+
+.logo
+  max-height: 38px
+
+#about
+  .logo
+    margin: 0 $margin-tiny
+
+#header-nav
+  min-height: 32px
+
+#main-content
+  min-height: calc('100vh - ' + ($header-height + $footer-height))
+
+.comment-textarea
+  padding: $margin-small $margin-tiny
