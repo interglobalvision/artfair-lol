@@ -3,6 +3,7 @@ import { FlowRouter } from 'meteor/kadira:flow-router';
 import { mount } from 'react-mounter';
 
 import '/imports/startup/client/routes/public.jsx';
+import '/imports/startup/client/routes/posts.jsx';
 
 // Other Routes stuff
 FlowRouter.wait();
