@@ -4,6 +4,7 @@ export class NewPost extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      photo: this.props.photo,
       caption: ''
     };
 
@@ -16,14 +17,13 @@ export class NewPost extends Component {
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.caption);
     event.preventDefault();
   }
 
   render() {
     return (
       <section>
-        <img src={this.props.photo} />
+        <img src={this.state.photo} />
         <form onSubmit={this.handleSubmit}>
           <textarea value={this.state.caption} onChange={this.handleChange} />
           <input type="submit" value="Submit" />
