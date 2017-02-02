@@ -13,12 +13,10 @@ const postsRoutes = FlowRouter.group({
 
 postsRoutes.route('/new', {
   name: 'newPost',
-  action(params) {
-    const photo = params.photo || '';
+  action() {
 
     mount(MainContainer, {
-      //content: <UserLogin />,
-      content: <NewPost photo={photo} />,
+      content: <NewPost />,
     });
   },
 });
