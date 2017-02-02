@@ -109,6 +109,17 @@ input, textarea
   position: relative
   z-index: 900
 
+#add-photo-input
+  width: 0.1px
+  height: 0.1px
+  opacity: 0
+  overflow: hidden
+  position: absolute
+  z-index: -1
+
+#add-photo-label
+  cursor: pointer
+
 // ******************************************************
 
 #main-content
@@ -167,7 +178,7 @@ $margin-basic = ($gutter * 2)
 
 space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic)
 
-grid(100%, $gutter, s)
+grid(80%, $gutter, s)
 
 $font-size-small = 11px
 $font-size-basic = 14px
