@@ -10,8 +10,8 @@ export class NewPost extends Component {
       caption: ''
     };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+    this.onSubmitForm = this.onSubmitForm.bind(this);
   }
 
   handleChange(event) {
@@ -36,11 +36,10 @@ export class NewPost extends Component {
     return (
       <section>
         <img src={this.state.photo} />
-        <form onSubmit={this.handleSubmit}>
-          <textarea value={this.state.caption} onChange={this.handleChange} />
+        <form onSubmit={this.onSubmitForm}>
+          <textarea value={this.state.caption} onChange={this.onInputChange} />
           <input type="submit" value="Submit" />
         </form>
-        <button onClick={this.handlesubmit}>SUBMIT</button>
       </section>
     );
   }
