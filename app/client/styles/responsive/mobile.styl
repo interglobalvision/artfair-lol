@@ -25,7 +25,7 @@ p
   min-height: 32px
 
 #main-content
-  min-height: calc('100vh - ' + ($header-height + $footer-height))
+  min-height: "calc(100vh - %s)" % ($header-height + $footer-height)
 
 .comment-textarea
   padding: $margin-small $margin-tiny
