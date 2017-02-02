@@ -43,8 +43,8 @@ export class NewPost extends Component {
     return (
       <section>
         <div className="grid-row border-bottom-grey">
-          <div id="new-post-image-holder" className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
-            <img id="new-post-image" className="post-image" src={this.state.photo} />
+          <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
+            <img className="post-image" src={this.state.photo} />
           </div>
         </div>
         <form onSubmit={this.onSubmitForm}>
