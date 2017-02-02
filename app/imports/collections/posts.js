@@ -1,4 +1,4 @@
-class PostsColection extends Mongo.Collection {
+class PostsCollection extends Mongo.Collection {
   insert(doc, callback) {
     doc.createdAt = doc.createdAt || new Date();
     doc.updatedAt = doc.updatedAt || new Date();
@@ -22,7 +22,7 @@ class PostsColection extends Mongo.Collection {
 };
 
 
-export const Posts = new PostsColection('Posts');
+export const Posts = new PostsCollection('Posts');
 
 Posts.deny({
   insert() { return true; },
