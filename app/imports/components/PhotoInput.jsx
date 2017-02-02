@@ -10,7 +10,7 @@ export class PhotoInput extends Component {
 
   render() {
     return(
-      <input ref={ input => { this.input = input; }}type="file" accept="image/*" capture="capture" onChange={this.onFileInputChange} />
+      <input ref={ input => { this.input = input; }} type="file" accept="image/*" capture="capture" onChange={this.onFileInputChange} />
     );
   }
 
