@@ -8,6 +8,10 @@ export class NewPost extends Component {
 
     let photo = Session.get('newPhoto');
 
+    if(photo === undefined) {
+      FlowRouter.go('home');
+    }
+
     this.state = {
       photo: photo,
       caption: ''
