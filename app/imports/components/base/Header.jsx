@@ -15,7 +15,7 @@ export const Header = () => (
         <div className='grid-item item-s-2'>
           <PhotoInput />
           <label id="add-photo-label" htmlFor="add-photo-input">
-            <img src="/icons/add_a_photo_2x.png" className="icon" />
+            <img src="/icons/add_a_photo.svg" className="icon" />
           </label>
         </div>
       </nav>
