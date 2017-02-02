@@ -3,21 +3,19 @@ import { Posts } from '/imports/collections/posts.js';
 export const addPost = new ValidatedMethod({
 	name: 'Posts.methods.add',
 	validate: new SimpleSchema({
-		url: {
-			type: SimpleSchema.RegEx.Url,
+		photo: {
+			type: String
 		},
     caption: {
       type: String,
-    },
-    userFingerPrint: {
-      type: String,
+      optional: true,
     },
 	}).validator(),
 
-	run({url, caption}) {
+	run({photo, caption}) {
 		Posts.insert({
-			name,
-			url,
+			photo,
+			caption,
 		});
 	}
 });

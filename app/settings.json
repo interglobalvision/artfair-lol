@@ -1,0 +1,22 @@
+{
+    "applicationName": "Artfair.lol",
+    "applicationSafeName": "artfair-lol",
+
+    "aws_bucket":"app-material-fair-com-2017",
+    "AWSAccessKeyId":"AKIAI4BFI6F4WQS56VOQ",
+    "AWSSecretAccessKey":"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",
+    "AWSRegion":"us-west-1",
+
+    "kadira": {
+      "appId": "xxx",
+      "appSecret": "xxx"
+    },
+
+    "public": {
+      "autosaveDelay": 1000,
+      "maxUploadSize": 6291456,
+      "analyticsSettings": {
+        "Google Analytics": {"trackingId":"UA-XXXXXXXX"}
+      }
+    }
+}

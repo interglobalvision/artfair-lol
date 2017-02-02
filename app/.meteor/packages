@@ -24,3 +24,5 @@ kadira:flow-router
 alanning:roles
 stylus
 aldeed:simple-schema
+mdg:validated-method
+msavin:mongol

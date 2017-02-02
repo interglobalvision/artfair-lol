@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { addPost } from '/imports/api/photosMethods.js';
+
 export class NewPost extends Component {
   constructor(props) {
     super(props);
@@ -18,6 +20,16 @@ export class NewPost extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
+
+    const photo = this.state.photo;
+    const caption = this.state.caption;
+
+    addPost.call({
+      photo,
+      caption,
+    });
+
+    return false;
   }
 
   render() {
@@ -28,6 +40,7 @@ export class NewPost extends Component {
           <textarea value={this.state.caption} onChange={this.handleChange} />
           <input type="submit" value="Submit" />
         </form>
+        <button onClick={this.handlesubmit}>SUBMIT</button>
       </section>
     );
   }
