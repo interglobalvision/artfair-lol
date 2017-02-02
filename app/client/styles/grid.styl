@@ -2,34 +2,35 @@
 
 .container
   margin: 0 auto
-  
+
 .grid-row
   display: flex
   flex-direction: row
   flex-wrap: wrap
   &.reverse
     flex-direction: row-reverse
-    
+
 .grid-column
   display: flex
   flex-direction: column
   &.reverse
     flex-direction: column-reverse
-    
+
 .grid-item
   position: relative
   flex: 0 1 auto
   max-width: 100%
   max-height: 100%
+  box-sizing: border-box
   &.no-gutter
     padding-left: 0
     padding-right: 0
   &.flex-grow
     flex-grow: 1
-  
+
 // FLEX POSITIONING
 
-  //ALIGN CONTENT  
+  //ALIGN CONTENT
 
 .align-content-start
   align-content: flex-start
@@ -39,8 +40,8 @@
 
 .align-content-end
   align-content: flex-end
-  
-.align-content-between  
+
+.align-content-between
   align-content: space-between
 
 .align-content-around
@@ -49,8 +50,8 @@
 .align-content-stretch
   align-content: stretch
 
-  //ALIGN ITEMS 
-    
+  //ALIGN ITEMS
+
 .align-items-start
   align-items: flex-start
 
@@ -59,18 +60,18 @@
 
 .align-items-end
   align-items: flex-end
-  
+
 .align-items-baseline
   align-items: baseline
 
 .align-items-stretch
   align-items: stretch
-  
-  //ALIGN SELF 
+
+  //ALIGN SELF
 
 .align-self-auto
   align-self: auto
-  
+
 .align-self-start
   align-self: flex-start
 
@@ -79,14 +80,14 @@
 
 .align-self-end
   align-self: flex-end
-  
+
 .align-self-baseline
   align-self: baseline
 
 .align-self-stretch
   align-self: stretch
-  
-  //JUSTIFY CONTENT 
+
+  //JUSTIFY CONTENT
 
 .justify-start
   justify-content: flex-start
@@ -96,28 +97,28 @@
 
 .justify-end
   justify-content: flex-end
-  
+
 .justify-between
   justify-content: space-between
-  
+
 .justify-around
   justify-content: space-around
-  
+
 // GRID
 
 grid($width = false, $gutter = false, $size = false, $cols = 12)
-  
+
   if $width
     .container
       width: $width
-    
+
   if $gutter
     .grid-item
       padding: 0 ( $gutter / 2 )
       &.no-gutter
         padding-left: 0
         padding-right: 0
-      
+
   // COLUMN SIZES & OFFSETS
 
   if $gutter and $size
@@ -146,7 +147,7 @@ space-maker($micro = false, $tiny = false, $small = false, $basic = false, $mid 
       padding-top: $micro
     .padding-bottom-micro
       padding-bottom: $micro
-  
+
   if $tiny
     .margin-top-tiny
       margin-top: $tiny
@@ -156,7 +157,7 @@ space-maker($micro = false, $tiny = false, $small = false, $basic = false, $mid 
       padding-top: $tiny
     .padding-bottom-tiny
       padding-bottom: $tiny
-  
+
   if $small
     .margin-top-small
       margin-top: $small
@@ -166,7 +167,7 @@ space-maker($micro = false, $tiny = false, $small = false, $basic = false, $mid 
       padding-top: $small
     .padding-bottom-small
       padding-bottom: $small
-  
+
   if $basic
     .margin-top-basic
       margin-top: $basic
@@ -176,7 +177,7 @@ space-maker($micro = false, $tiny = false, $small = false, $basic = false, $mid 
       padding-top: $basic
     .padding-bottom-basic
       padding-bottom: $basic
-      
+
   if $mid
     .margin-top-mid
       margin-top: $mid
@@ -186,7 +187,7 @@ space-maker($micro = false, $tiny = false, $small = false, $basic = false, $mid 
       padding-top: $mid
     .padding-bottom-mid
       padding-bottom: $mid
-  
+
   if $large
     .margin-top-large
       margin-top: $large
@@ -196,7 +197,7 @@ space-maker($micro = false, $tiny = false, $small = false, $basic = false, $mid 
       padding-top: $large
     .padding-bottom-large
       padding-bottom: $large
-    
+
 // GRID TEST
 
 .grid-test
@@ -214,4 +215,3 @@ space-maker($micro = false, $tiny = false, $small = false, $basic = false, $mid 
     background: lightblue
   .grid-item
     border-style: dashed
-    
