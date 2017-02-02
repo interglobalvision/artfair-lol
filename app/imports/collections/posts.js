@@ -25,7 +25,7 @@ class PostsColection extends Mongo.Collection {
 export const Posts = new PostsColection('Posts');
 
 Posts.deny({
-	insert() { return true; },
-	update() { return true; },
-	remove() { return true; },
+  insert() { return true; },
+  update() { return true; },
+  remove() { return true; },
 });
