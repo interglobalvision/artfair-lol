@@ -85,6 +85,8 @@ input, textarea
   border-radius: 0
   resize: none
   display: block
+  margin: 0 auto
+  box-sizing: border-box
 
 .border-bottom-grey
   border-bottom: $border
@@ -141,12 +143,11 @@ input, textarea
   width: 100%
   min-height: 200px
 
-// CAMERA
+// NEW POST
 
-#camera-frame
-  width: 100%
-  height: 300px
-  background-color: $color-white
+#new-post-image
+  width: auto
+  max-height: 80vh
 
 // ******************************************************
 
@@ -178,7 +179,7 @@ $margin-basic = ($gutter * 2)
 
 space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic)
 
-grid(80%, $gutter, s)
+grid(100%, $gutter, s)
 
 $font-size-small = 11px
 $font-size-basic = 14px
