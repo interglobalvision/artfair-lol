@@ -17,6 +17,7 @@ $color-black = rgb(0, 0, 0)
 $color-white = rgb(255, 255, 255)
 $color-grey = rgb(150, 150, 150)
 $color-grey-light = rgb(220, 220, 220)
+$color-grey-7 = rgba(150, 150, 150, .7)
 
 $border-width = 1px
 $border-radius = 5px
@@ -87,6 +88,7 @@ input, textarea
   display: block
   margin: 0 auto
   box-sizing: border-box
+  outline: 0
 
 .border-bottom-grey
   border-bottom: $border
@@ -107,7 +109,7 @@ input, textarea
 #header
   width: 100%
   background-color: $color-white
-  box-shadow: 0 3px 5px $color-grey
+  box-shadow: 0 2px 3px $color-grey-7
   position: relative
   z-index: 900
 
@@ -137,17 +139,11 @@ input, textarea
 .post-image
   display: block
   margin: 0 auto
-  width: 100%
+  width: auto
 
 .comment-textarea
   width: 100%
   min-height: 200px
-
-// NEW POST
-
-#new-post-image
-  width: auto
-  max-height: 80vh
 
 // ******************************************************
 
