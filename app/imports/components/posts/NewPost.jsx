@@ -7,13 +7,15 @@ export class NewPost extends Component {
     super(props);
 
     let photo = Session.get('newPhoto');
+    let fingerprint = Session.get('fingerprint');
 
     if(photo === undefined) {
       FlowRouter.go('home');
     }
 
     this.state = {
-      photo: photo,
+      photo,
+      fingerprint,
       caption: ''
     };
 
@@ -30,10 +32,12 @@ export class NewPost extends Component {
 
     const photo = this.state.photo;
     const caption = this.state.caption;
+    const fingerprint = this.state.fingerprint;
 
     addPost.call({
       photo,
       caption,
+      fingerprint,
     });
 
     return false;

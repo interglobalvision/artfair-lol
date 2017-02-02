@@ -6,15 +6,19 @@ export const addPost = new ValidatedMethod({
     photo: {
       type: String
     },
+    fingerprint: {
+      type: String,
+    },
     caption: {
       type: String,
       optional: true,
     },
   }).validator(),
 
-  run({photo, caption}) {
+  run({photo, fingerprint, caption}) {
     Posts.insert({
       photo,
+      fingerprint,
       caption,
     });
   }
