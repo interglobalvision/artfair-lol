@@ -16,6 +16,9 @@ input, textarea
   border-left: $border
   border-color: $color-grey-light
 
+.icon
+  height: 31px
+
 .logo
   max-height: 42px
 
@@ -24,7 +27,10 @@ input, textarea
     margin: 0 $margin-tiny
 
 #main-content
-  min-height: calc('100vh - ' + ($header-height + $footer-height))
+  min-height: "calc(100vh - %s)" % ($header-height + $footer-height)
+
+.post-image
+  max-height: "calc(90vh - %s)" % ($header-height + $footer-height)
 
 .comment-textarea
   padding: $margin-small $margin-tiny
