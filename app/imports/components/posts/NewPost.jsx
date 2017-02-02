@@ -5,8 +5,11 @@ import { addPost } from '/imports/api/photosMethods.js';
 export class NewPost extends Component {
   constructor(props) {
     super(props);
+
+    let photo = Session.get('newPhoto');
+
     this.state = {
-      photo: this.props.photo,
+      photo: photo,
       caption: ''
     };
 
@@ -14,11 +17,11 @@ export class NewPost extends Component {
     this.onSubmitForm = this.onSubmitForm.bind(this);
   }
 
-  handleChange(event) {
+  onInputChange(event) {
     this.setState({caption: event.target.value});
   }
 
-  handleSubmit(event) {
+  onSubmitForm(event) {
     event.preventDefault();
 
     const photo = this.state.photo;

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
-import { Photo } from '/imports/components/Photo.jsx';
+import { PhotoInput } from '/imports/components/PhotoInput.jsx';
 
 export const Header = () => (
   <header>
-    <Photo />
+    <PhotoInput />
   </header>
 );
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export class Photo extends Component {
+export class PhotoInput extends Component {
   constructor(props) {
     super(props);
 
@@ -18,13 +18,13 @@ export class Photo extends Component {
     var reader = new FileReader();
 
     reader.onload = function (e) {
-      const photo = encodeURIComponent(e.target.result);
+      const photo = e.target.result;
 
       e.target.value = '';
 
-      FlowRouter.go('newPost', {
-        photo,
-      });
+      Session.set('newPhoto', photo);
+
+      FlowRouter.go('newPost');
     };
 
     reader.readAsDataURL(this.input.files[0]);

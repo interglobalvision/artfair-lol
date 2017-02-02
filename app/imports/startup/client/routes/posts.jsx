@@ -22,17 +22,3 @@ postsRoutes.route('/new', {
     });
   },
 });
-
-postsRoutes.route('/new/:photo', {
-  name: 'newPost',
-  action(params) {
-    let photo = params.photo || '';
-
-    photo = decodeURIComponent(photo);
-
-    mount(MainContainer, {
-      //content: <UserLogin />,
-      content: <NewPost photo={photo} />,
-    });
-  },
-});
