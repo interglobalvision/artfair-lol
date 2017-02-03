@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Header } from '/imports/components/base/Header.jsx';
-// import { Footer } from '/imports/components/footer.jsx';
+import { Footer } from '/imports/components/base/Footer.jsx';
 
 export const MainLayout = ({ content }) => (
   <div id="main-container">
@@ -11,6 +11,6 @@ export const MainLayout = ({ content }) => (
         {content}
       </div>
     </div>
-    { /* <Footer /> */}
+    <Footer />
   </div>
 );
