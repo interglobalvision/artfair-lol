@@ -8,7 +8,7 @@ export const MainLayout = ({ content }) => (
   <div id="main-container">
     <About />
     <Header />
-    <div id="main-content">
+    <div id="main-content" className='border-bottom-grey'>
       <div className="container">
         {content}
       </div>
