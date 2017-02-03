@@ -115,7 +115,15 @@ input, textarea
   width: 100%
   background-color: $color-white
   box-shadow: 0 2px 3px $color-grey-alpha-7
-  z-index: 900
+  z-index: 500
+  position: relative
+  &.fixed
+    top: 0
+    left: 0
+    position: fixed
+
+.sticky-inner-wrapper
+  z-index: 500
 
 #add-photo-input
   top: -999999px
@@ -133,6 +141,8 @@ input, textarea
 // ******************************************************
 
 #main-content
+  position: relative
+  z-index: 100
   background-color: $color-white
   &.camera
     background-color: $color-black
