@@ -49,10 +49,6 @@ export class NewPost extends Component {
     const caption = this.state.caption;
     const fingerprint = this.state.fingerprint;
 
-    this.setState({
-      uploading: false,
-    });
-
     if (error) {
       console.log(error);
       throw new Meteor.Error('upload-file-fail', error);
