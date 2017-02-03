@@ -16,7 +16,7 @@ Meteor.publish('feed.posts', function(subscriptionParams) {
 
 });
 
-Meteor.publish('post.posts', function(postId) {
+Meteor.publish('post.single', function(postId) {
 
   check(postId, String);
 

@@ -25,7 +25,7 @@ function getTrackerLoader(reactiveMapper) {
 
 function reactiveMapper(props, onData) {
 
-  if (Meteor.subscribe('post.posts', props.postId).ready()) {
+  if (Meteor.subscribe('post.single', props.postId).ready()) {
     const post = Posts.findOne(props.postId);
     onData(null, { post });
   };
