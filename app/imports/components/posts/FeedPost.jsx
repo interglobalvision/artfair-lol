@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 
+import { Caption } from '/imports/components/posts/Caption.jsx';
+
 export class FeedPost extends Component {
   render() {
-
-    let caption = '';
-    if (this.props.caption) {
-      caption = <p className='caption margin-bottom-tiny'>{this.props.caption}</p>
-    }
 
     return (
       <div className='post-feed padding-bottom-mid'>
@@ -25,11 +22,9 @@ export class FeedPost extends Component {
             </div>
           </div>
         </div>
-        <div className='grid-row post-caption'>
-          <div className='grid-item item-s-12'>
-            {caption}
-          </div>
-        </div>
+
+        <Caption caption={this.props.caption} />
+
         <div className='grid-row post-comments'>
           <div className='grid-item item-s-12'>
             <div className='padding-bottom-tiny'>
