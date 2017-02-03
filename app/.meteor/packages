@@ -26,5 +26,6 @@ aldeed:simple-schema
 mdg:validated-method
 msavin:mongol
 session
+edgee:slingshot
 check
 momentjs:moment
