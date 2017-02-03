@@ -7,7 +7,7 @@ import { mount } from 'react-mounter';
 // import { Page404 } from '/imports/components/pages/Page404.jsx';
 
 import { MainContainer } from '/imports/containers/MainContainer.jsx';
-// import { UserLogin } from '/imports/components/accounts/Login.jsx';
+import { FeedContainer } from '/imports/containers/FeedContainer.jsx';
 
 // Public Routes
 const publicRoutes = FlowRouter.group({
@@ -19,7 +19,7 @@ publicRoutes.route('/', {
   action() {
     mount(MainContainer, {
       //content: <UserLogin />,
-      content: 'Hello World',
+      content: <FeedContainer />,
     });
   },
 });
