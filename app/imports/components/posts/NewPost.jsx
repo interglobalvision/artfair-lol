@@ -16,11 +16,63 @@ export class NewPost extends Component {
     this.state = {
       photo,
       fingerprint,
-      caption: ''
+      caption: '',
+      uploading: false,
     };
 
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
+  }
+
+  getSlingshowUploader() {
+    return new Slingshot.Upload('imageUpload');
+  }
+
+  uploadFile() {
+    const uploader = this.getSlingshowUploader();
+    const photo = this.state.photo;
+
+    this.setState({
+      uploading: true,
+    });
+
+    // Use fetch to convert base64 to blob
+    fetch(photo)
+      .then( res => res.blob() )
+      .then( blob => {
+        uploader.send(blob, this.handleUpload);
+      });
+  }
+
+  handleUpload(error, url) {
+    const caption = this.state.caption;
+    const fingerprint = this.state.fingerprint;
+
+    this.setState({
+      uploading: false,
+    });
+
+    if (error) {
+      console.log(error);
+      throw new Meteor.Error('upload-file-fail', error);
+
+    } else {
+
+      addPost.call({
+        caption,
+        photo: url,
+        fingerprint,
+      }, (err, res) => {
+        if (err) {
+          console.log(err);
+        }
+
+        FlowRouter.go('home');
+
+      });
+
+    }
   }
 
   onInputChange(event) {
@@ -30,15 +82,7 @@ export class NewPost extends Component {
   onSubmitForm(event) {
     event.preventDefault();
 
-    const photo = this.state.photo;
-    const caption = this.state.caption;
-    const fingerprint = this.state.fingerprint;
-
-    addPost.call({
-      photo,
-      caption,
-      fingerprint,
-    });
+    this.uploadFile();
 
     return false;
   }
