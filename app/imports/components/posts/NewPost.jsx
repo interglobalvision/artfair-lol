@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import sanitizeHtml from 'sanitize-html';
+
 import { addPost } from '/imports/api/photosMethods.js';
 
 export class NewPost extends Component {
@@ -16,8 +18,6 @@ export class NewPost extends Component {
     this.state = {
       photo,
       fingerprint,
-      caption: '',
-      uploading: false,
     };
 
     this.onInputChange = this.onInputChange.bind(this);
@@ -32,10 +32,6 @@ export class NewPost extends Component {
   uploadFile() {
     const uploader = this.getSlingshowUploader();
     const photo = this.state.photo;
-
-    this.setState({
-      uploading: true,
-    });
 
     // Use fetch to convert base64 to blob
     fetch(photo)

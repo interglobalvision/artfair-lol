@@ -2,7 +2,6 @@ accounts-base@1.2.14
 alanning:roles@1.2.15
 aldeed:simple-schema@1.5.3
 allow-deny@1.0.5
-autopublish@1.0.7
 autoupdate@1.2.11
 babel-compiler@6.13.0
 babel-runtime@1.0.1
@@ -54,6 +53,7 @@ mobile-experience@1.0.4
 mobile-status-bar@1.0.13
 modules@0.7.7
 modules-runtime@0.7.7
+momentjs:moment@2.17.1
 mongo@1.1.14
 mongo-id@1.0.6
 msavin:mongol@2.0.1
