@@ -4,12 +4,11 @@ import { Caption } from '/imports/components/posts/Caption.jsx';
 
 export class FeedPost extends Component {
   render() {
-
     return (
       <div className='post-feed padding-bottom-mid'>
         <div className='grid-row'>
           <div className='grid-item item-s-12 no-gutter'>
-            <img className='post-image' src={this.props.photo} />
+            <img className='post-image' src={this.props.post.photo} />
           </div>
         </div>
         <div className='grid-row margin-bottom-small'>
@@ -37,7 +36,7 @@ export class FeedPost extends Component {
         </div>
         <div className='grid-row post-date padding-top-tiny'>
           <div className='grid-item item-s-12 font-uppercase font-color-grey font-size-small'>
-            Time since post
+            {moment(this.props.post.createdAt).fromNow()}
           </div>
         </div>
       </div>
