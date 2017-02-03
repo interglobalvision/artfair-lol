@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 
-import { Caption } from '/imports/components/posts/Caption.jsx';
-
-export class FeedPost extends Component {
+export class SinglePost extends Component {
   render() {
+
+    let caption = '';
+    if (this.props.post.caption) {
+      caption = <p className='caption margin-bottom-tiny'>{this.props.post.caption}</p>
+    }
+
     return (
       <div className='post-feed padding-bottom-mid'>
         <div className='grid-row'>
@@ -21,14 +25,13 @@ export class FeedPost extends Component {
             </div>
           </div>
         </div>
-
-        <Caption caption={this.props.caption} />
-
+        <div className='grid-row post-caption'>
+          <div className='grid-item item-s-12'>
+            {caption}
+          </div>
+        </div>
         <div className='grid-row post-comments'>
           <div className='grid-item item-s-12'>
-            <div className='padding-bottom-tiny'>
-              <a href={'/post/' + this.props._id} className='font-size-small font-color-grey'>See all comments</a>
-            </div>
             <ul>
               <li><p className='margin-bottom-tiny'>Comment text</p></li>
             </ul>
@@ -36,7 +39,7 @@ export class FeedPost extends Component {
         </div>
         <div className='grid-row post-date padding-top-tiny'>
           <div className='grid-item item-s-12 font-uppercase font-color-grey font-size-small'>
-            {moment(this.props.post.createdAt).fromNow()}
+            Time since post
           </div>
         </div>
       </div>

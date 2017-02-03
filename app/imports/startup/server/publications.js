@@ -15,3 +15,11 @@ Meteor.publish('feed.posts', function(subscriptionParams) {
   });
 
 });
+
+Meteor.publish('post.single', function(postId) {
+
+  check(postId, String);
+
+  return Posts.find(postId);
+
+});

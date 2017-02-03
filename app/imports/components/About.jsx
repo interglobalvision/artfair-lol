@@ -10,8 +10,8 @@ export const About = () => (
           <p>Made by <a href="http://interglobal.vision">interglobal.vision</a> in Mexico City.</p>
         </div>
         <div className="grid-item item-s-12 margin-top-small">
-          <img src="icons/i-d-logo-white.svg" className="logo u-inline-block" />
-          <img src="icons/globie-logo-white.svg" className="logo u-inline-block" />
+          <img src="/icons/i-d-logo-white.svg" className="logo u-inline-block" />
+          <img src="/icons/globie-logo-white.svg" className="logo u-inline-block" />
         </div>
       </div>
     </div>
