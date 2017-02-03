@@ -3,12 +3,12 @@ import { Meteor } from 'meteor/meteor';
 import { Random } from 'meteor/random';
 
 Slingshot.fileRestrictions('imageUpload', {
-  allowedFileTypes: ['image/png', 'image/jpeg', 'image/gif'],
+  allowedFileTypes: ['image/png', 'image/jpeg'],
   maxSize: parseInt(Meteor.settings.public.maxUploadSize),
 });
 
 // Misc
-function createFilename(filename) {
+function createFilename() {
   return Random.id(30);
 }
 
@@ -31,8 +31,7 @@ if (Meteor.isServer) {
     },
 
     key(file) {
-      // Store file into an image directory for the user's username.
-      return 'images/' + createFilename(file.name);
+      return 'images/' + createFilename();
     },
 
   });
