@@ -30,16 +30,16 @@ export class SinglePost extends Component {
             {caption}
           </div>
         </div>
+        <div className='grid-row post-date padding-bottom-tiny'>
+          <div className='grid-item item-s-12 font-uppercase font-color-grey font-size-small'>
+            {moment(this.props.post.createdAt).fromNow()}
+          </div>
+        </div>
         <div className='grid-row post-comments'>
           <div className='grid-item item-s-12'>
             <ul>
               <li><p className='margin-bottom-tiny'>Comment text</p></li>
             </ul>
-          </div>
-        </div>
-        <div className='grid-row post-date padding-top-tiny'>
-          <div className='grid-item item-s-12 font-uppercase font-color-grey font-size-small'>
-            Time since post
           </div>
         </div>
       </div>
