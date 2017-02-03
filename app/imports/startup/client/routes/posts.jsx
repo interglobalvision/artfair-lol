@@ -5,6 +5,7 @@ import { mount } from 'react-mounter';
 import { MainContainer } from '/imports/containers/MainContainer.jsx';
 
 import { NewPost } from '/imports/components/posts/NewPost.jsx';
+import { PostContainer } from '/imports/containers/PostContainer.jsx';
 
 // Post Routes
 const postsRoutes = FlowRouter.group({
@@ -17,6 +18,16 @@ postsRoutes.route('/new', {
 
     mount(MainContainer, {
       content: <NewPost />,
+    });
+  },
+});
+
+postsRoutes.route('/post/:id', {
+  name: 'singlePost',
+  action(params) {
+    mount(MainContainer, {
+      //content: <UserLogin />,
+      content: <PostContainer postId={params.id} />,
     });
   },
 });
