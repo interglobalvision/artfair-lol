@@ -11,7 +11,7 @@ export class FeedLayout extends Component {
         <section id='feed'>
           <div className='feed-posts'>
           {this.props.posts.map((post, key) => (
-            <FeedPost _id={post._id} fingerprint={post.fingerprint} photo={post.photo} caption={post.caption} key={key} />
+            <FeedPost post={post} key={key} />
           ))}
           </div>
 
