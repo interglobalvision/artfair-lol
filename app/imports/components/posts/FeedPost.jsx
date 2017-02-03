@@ -22,12 +22,12 @@ export class FeedPost extends Component {
           </div>
         </div>
 
-        <Caption caption={this.props.caption} />
+        <Caption caption={this.props.post.caption} />
 
         <div className='grid-row post-comments'>
           <div className='grid-item item-s-12'>
             <div className='padding-bottom-tiny'>
-              <a href={'/post/' + this.props._id} className='font-size-small font-color-grey'>See all comments</a>
+              <a href={'/post/' + this.props.post._id} className='font-size-small font-color-grey'>See all comments</a>
             </div>
             <ul>
               <li><p className='margin-bottom-tiny'>Comment text</p></li>
