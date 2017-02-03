@@ -39,7 +39,7 @@ $border = $border-width solid
 
 // BASIC
 
-html
+html, body
   background-color: $color-grey-light
   color: $color-black
 
@@ -168,19 +168,20 @@ input, textarea
 
 // MEDIA QUERIES
 
-$gutter = 18px
+$gutter = 24px
 
 $margin-micro = ($gutter * .3)
 $margin-tiny = ($gutter * .5)
 $margin-small = $gutter
 $margin-basic = ($gutter * 2)
+$margin-mid = ($gutter * 2.5)
 
-space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic)
+space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic, $margin-mid)
 
 grid(100%, $gutter, s)
 
-$font-size-small = 11px
-$font-size-basic = 14px
+$font-size-small = 12px
+$font-size-basic = 16px
 $font-size-mid = 18px
 $font-size-large = 24px
 
@@ -190,19 +191,20 @@ font-sizes($font-size-basic, false, $font-size-large, $font-size-mid, $font-size
 
 @media screen and (min-width: 720px)
 
-  $gutter = 24px
+  $gutter = 32px
 
   $margin-micro = ($gutter * .3)
   $margin-tiny = ($gutter * .5)
   $margin-small = $gutter
   $margin-basic = ($gutter * 2)
+  $margin-mid = ($gutter * 2.5)
 
-  space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic)
+  space-maker($margin-micro, $margin-tiny, $margin-small, $margin-basic, $margin-mid)
 
   grid(680px, $gutter, m)
 
-  $font-size-small = 13px
-  $font-size-basic = 16px
+  $font-size-small = 14px
+  $font-size-basic = 18px
   $font-size-mid = 21px
   $font-size-large = 24px
 
