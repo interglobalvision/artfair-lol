@@ -1,5 +1,7 @@
 import { Posts } from '/imports/collections/posts.js';
 
+import sanitizeHtml from 'sanitize-html';
+
 export const addPost = new ValidatedMethod({
   name: 'Posts.methods.add',
   validate: new SimpleSchema({
@@ -16,10 +18,13 @@ export const addPost = new ValidatedMethod({
   }).validator(),
 
   run({photo, fingerprint, caption}) {
+
+    let captionSantized = sanitizeHtml(caption);
+
     Posts.insert({
       photo,
       fingerprint,
-      caption,
+      caption: captionSantized,
     });
   }
 });

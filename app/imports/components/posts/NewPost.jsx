@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import sanitizeHtml from 'sanitize-html';
+
 import { addPost } from '/imports/api/photosMethods.js';
 
 export class NewPost extends Component {
@@ -16,7 +18,6 @@ export class NewPost extends Component {
     this.state = {
       photo,
       fingerprint,
-      caption: ''
     };
 
     this.onInputChange = this.onInputChange.bind(this);
@@ -31,7 +32,7 @@ export class NewPost extends Component {
     event.preventDefault();
 
     const photo = this.state.photo;
-    const caption = this.state.caption;
+    const caption = sanitizeHtml(this.state.caption);
     const fingerprint = this.state.fingerprint;
 
     addPost.call({
