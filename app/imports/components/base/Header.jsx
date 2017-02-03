@@ -11,7 +11,8 @@ export const Header = () => (
             <button className='button button-small font-size-small'>NEW</button>
           </div>
           <div className='grid-item item-s-8'>
-            <h1 className='font-sans font-size-large font-bold'>Artfair.lol</h1>
+            <a href='/'><img id='app-logo' src='/icons/artfair-lol-logo.svg' className='icon' /></a>
+            <h1 className='u-visuallyhidden'>Artfair.lol</h1>
           </div>
           <div className='grid-item item-s-2'>
             <PhotoInput />
