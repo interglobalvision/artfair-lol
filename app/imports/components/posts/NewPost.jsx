@@ -16,7 +16,6 @@ export class NewPost extends Component {
     this.state = {
       photo,
       fingerprint,
-      caption: ''
     };
 
     this.onInputChange = this.onInputChange.bind(this);
