@@ -6,7 +6,7 @@ import { Footer } from '/imports/components/base/Footer.jsx';
 export const MainLayout = ({ content }) => (
   <div id="main-container">
     <Header />
-    <div id="main-content">
+    <div id="main-content" className='border-bottom-grey'>
       <div className="container">
         {content}
       </div>
