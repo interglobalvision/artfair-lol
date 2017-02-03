@@ -1,0 +1,19 @@
+import React, { Component } from 'react';
+
+export const About = () => (
+  <div id="about">
+    <div className="container padding-top-small padding-bottom-small">
+      <div className="grid-row">
+        <div className="grid-item item-s-12 item-m-8 font-serif font-size-mid">
+          <p>Artfair.lol is an anonymous photogram that allows only contributions made on-site at art fairs.</p>
+          <p>This beta is for Material Art Fair and Zona Maco 2017.</p>
+          <p>Made by <a href="http://interglobal.vision">interglobal.vision</a> in Mexico City.</p>
+        </div>
+        <div className="grid-item item-s-12 margin-top-small">
+          <img src="icons/i-d-logo-white.svg" className="logo u-inline-block" />
+          <img src="icons/globie-logo-white.svg" className="logo u-inline-block" />
+        </div>
+      </div>
+    </div>
+  </div>
+);
