@@ -10,11 +10,13 @@ class PostsCollection extends Mongo.Collection {
   update(selector, modifier, ...optionsAndCallback) {
 
     // When modifying whole document (ex. Mongol)
-    if(_.isUndefined(modifier.$set)) {
-      modifier['updatedAt'] = modifier['updatedAt'] || new Date();
-    } else if (!_.isUndefined(modifier.$set)) {
+
+    if (!_.isUndefined(modifier.$set) || !_.isUndefined(modifier.$push)) {
       // When modifying whole document (ex. Mongol)
-      modifier.$set['updatedAt'] = modifier.$set['updatedAt'] || new Date();
+      modifier['$set'] = {};
+      modifier['$set']['updatedAt'] = new Date();
+    } else {
+      modifier['updatedAt'] = new Date();
     }
 
     return super.update(selector, modifier, ...optionsAndCallback);
