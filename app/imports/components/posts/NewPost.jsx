@@ -34,11 +34,13 @@ export class NewPost extends Component {
     const photo = this.state.photo;
     const caption = sanitizeHtml(this.state.caption);
     const fingerprint = this.state.fingerprint;
+    const comments = [];
 
     addPost.call({
       photo,
       caption,
       fingerprint,
+      comments,
     });
 
     return false;
@@ -47,13 +49,13 @@ export class NewPost extends Component {
   render() {
     return (
       <section>
-        <div className="grid-row border-bottom-grey">
+        <div className="grid-row margin-bottom-small">
           <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
             <img className="post-image" src={this.state.photo} />
           </div>
         </div>
         <form onSubmit={this.onSubmitForm}>
-          <textarea className="comment-textarea border-bottom-grey margin-bottom-small" placeholder="Add a caption" value={this.state.caption} onChange={this.onInputChange} />
+          <textarea className="comment-textarea margin-bottom-small" placeholder="Add a caption" value={this.state.caption} onChange={this.onInputChange} />
           <div className="grid-row margin-bottom-basic">
             <div className="grid-item item-s-12 text-align-center">
               <input className="button font-size-mid" type="submit" value="POST" />
