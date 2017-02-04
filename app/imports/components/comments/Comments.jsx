@@ -8,15 +8,11 @@ export class Comments extends Component {
 
     if (this.props.comments) {
       return (
-        <div className='grid-row post-comments'>
-          <div className='grid-item item-s-12'>
-            <ul>
-              {this.props.comments.map((comment, key) => (
-                <Comment comment={comment} key={key} />
-              ))}
-            </ul>
-          </div>
-        </div>
+        <ul>
+          {this.props.comments.map((comment, key) => (
+            <Comment comment={comment} key={key} />
+          ))}
+        </ul>
       )
     }
 

@@ -32,7 +32,11 @@ export class SinglePost extends Component {
           </div>
         </div>
 
-        <Comments comments={this.props.post.comments} />
+        <div className='grid-row post-comments'>
+          <div className='grid-item item-s-12'>
+            <Comments comments={this.props.post.comments} />
+          </div>
+        </div>
 
         <NewComment postId={this.props.post._id} />
 

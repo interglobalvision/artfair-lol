@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { Caption } from '/imports/components/posts/Caption.jsx';
+import { Comments } from '/imports/components/comments/Comments.jsx';
 
 export class FeedPost extends Component {
   render() {
@@ -29,9 +30,7 @@ export class FeedPost extends Component {
             <div className='padding-bottom-tiny font-color-grey'>
               <a href={'/post/' + this.props.post._id} className='font-size-small'>See all comments</a>
             </div>
-            <ul>
-              <li><p className='margin-bottom-tiny'>Comment text</p></li>
-            </ul>
+            <Comments comments={this.props.post.comments} />
           </div>
         </div>
         <div className='grid-row post-date padding-top-tiny'>
