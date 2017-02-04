@@ -26,8 +26,8 @@ export class FeedPost extends Component {
 
         <div className='grid-row post-comments'>
           <div className='grid-item item-s-12'>
-            <div className='padding-bottom-tiny'>
-              <a href={'/post/' + this.props.post._id} className='font-size-small font-color-grey'>See all comments</a>
+            <div className='padding-bottom-tiny font-color-grey'>
+              <a href={'/post/' + this.props.post._id} className='font-size-small'>See all comments</a>
             </div>
             <ul>
               <li><p className='margin-bottom-tiny'>Comment text</p></li>
