@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 
+import { Caption } from '/imports/components/posts/Caption.jsx';
+import { Comments } from '/imports/components/comments/Comments.jsx';
+import { NewComment } from '/imports/components/comments/NewComment.jsx';
+
 export class SinglePost extends Component {
   render() {
-
-    let caption = '';
-    if (this.props.post.caption) {
-      caption = <p className='caption margin-bottom-tiny'>{this.props.post.caption}</p>
-    }
-
     return (
       <div className='post-feed padding-bottom-mid'>
         <div className='grid-row'>
@@ -25,23 +23,19 @@ export class SinglePost extends Component {
             </div>
           </div>
         </div>
-        <div className='grid-row post-caption'>
-          <div className='grid-item item-s-12'>
-            {caption}
-          </div>
-        </div>
+
+        <Caption caption={this.props.post.caption} />
+
         <div className='grid-row post-date padding-bottom-tiny'>
           <div className='grid-item item-s-12 font-uppercase font-color-grey font-size-small'>
             {moment(this.props.post.createdAt).fromNow()}
           </div>
         </div>
-        <div className='grid-row post-comments'>
-          <div className='grid-item item-s-12'>
-            <ul>
-              <li><p className='margin-bottom-tiny'>Comment text</p></li>
-            </ul>
-          </div>
-        </div>
+
+        <Comments comments={this.props.post.comments} />
+
+        <NewComment postId={this.props.post._id} />
+
       </div>
     );
   }
