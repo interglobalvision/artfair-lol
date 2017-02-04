@@ -18,7 +18,7 @@ export class FeedPost extends Component {
               <div className='grid-item font-size-large font-bold'>99</div>
               <div className='grid-item'><img className='icon' src='/icons/thumb_up.svg' /></div>
               <div className='grid-item margin-top-micro'><img className='icon' src='/icons/thumb_down.svg' /></div>
-              <div className='grid-item margin-top-micro'><img className='icon' src='/icons/comment.svg' /></div>
+              <div className='grid-item margin-top-micro'><a href={'/post/' + this.props.post._id}><img className='icon' src='/icons/comment.svg' /></a></div>
             </div>
           </div>
         </div>
