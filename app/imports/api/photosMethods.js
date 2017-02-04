@@ -15,9 +15,12 @@ export const addPost = new ValidatedMethod({
       type: String,
       optional: true,
     },
+    comments: {
+      type: [String],
+    }
   }).validator(),
 
-  run({photo, fingerprint, caption}) {
+  run({photo, fingerprint, caption, comments}) {
 
     let captionSantized = sanitizeHtml(caption);
 
@@ -25,6 +28,7 @@ export const addPost = new ValidatedMethod({
       photo,
       fingerprint,
       caption: captionSantized,
+      comments,
     });
   }
 });
