@@ -12,12 +12,12 @@ export class NewPostsNotice extends Component {
   }
 
   render() {
-    if (!this.props.posts.length) {
+    if (!this.props.newPosts) {
       return null;
     }
 
     return (
-      <p onClick={this.resetFeedTimestamp}>{this.props.posts.length} new posts</p>
+      <p onClick={this.resetFeedTimestamp}>{this.props.newPosts} new posts</p>
     );
   }
 };

@@ -34,7 +34,11 @@ function reactiveMapper(props, onData) {
     timestamp: Session.get('feedTimestamp'),
   };
 
-  if (Meteor.subscribe('feed.posts', subscriptionParams).ready()) {
+  let subscriptionNewPostsParams = {
+    timestamp: Session.get('feedTimestamp'),
+  };
+
+  if (Meteor.subscribe('feed.posts', subscriptionParams).ready() && Meteor.subscribe('feed.newPosts', subscriptionNewPostsParams).ready()) {
     console.log('retriggering feed sub');
 
     const posts = Posts.find({
@@ -42,12 +46,18 @@ function reactiveMapper(props, onData) {
         $lte: Session.get('feedTimestamp'),
       },
     }, {
-    sort: {
-      createdAt: -1,
-    },
-  }).fetch();
+      sort: {
+        createdAt: -1,
+      },
+    }).fetch();
 
-    onData(null, { posts });
+    const newPosts = Posts.find({
+      createdAt: {
+        $gt: Session.get('feedTimestamp'),
+      },
+    }).fetch().length;
+
+    onData(null, { posts, newPosts });
   };
 
 }
