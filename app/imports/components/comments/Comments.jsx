@@ -20,17 +20,15 @@ export const Comments = ({comments, commentsLimit, postId}) => {
   });
 
   if (comments.length > commentsLimit) {
-    moreComments =
-      <div className='padding-bottom-tiny font-color-grey'>
-        <a href={'/post/' + postId} className='font-size-small'>See all comments</a>
-      </div>
-    ;
+    moreComments = <a href={'/post/' + postId} className='font-size-small'>See all comments</a> ;
   }
 
   return (
     <div className='grid-row post-comments'>
       <div className='grid-item item-s-12'>
-        {moreComments}
+        <div className='padding-bottom-tiny font-color-grey'>
+          {moreComments}
+        </div>
         <ul>
           {commentsRows}
         </ul>
