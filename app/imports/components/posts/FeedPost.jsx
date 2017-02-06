@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 
 import { Caption } from '/imports/components/posts/Caption.jsx';
 
+import { NewPostsContainer } from '/imports/containers/NewPostsContainer.jsx';
+
 export class FeedPost extends Component {
   render() {
     return (
       <div className='post-feed padding-bottom-mid'>
+        <NewPostsContainer />
         <div className='grid-row'>
           <div className='grid-item item-s-12 no-gutter'>
             <img className='post-image' src={this.props.post.photo} />

@@ -4,7 +4,7 @@ import { compose } from 'react-komposer';
 
 import { Posts } from '/imports/collections/posts.js';
 
-import { FeedLayout } from '/imports/components/feed/FeedLayout.jsx';
+import { NewPostsNotice } from '/imports/components/feed/NewPostsNotice.jsx';
 
 function getTrackerLoader(reactiveMapper) {
   return (props, onData, env) => {
@@ -25,31 +25,21 @@ function getTrackerLoader(reactiveMapper) {
 
 function reactiveMapper(props, onData) {
 
-  if (!Session.get('feedTimestamp')) {
-    Session.set('feedTimestamp', new Date());
-  }
-
   let subscriptionParams = {
-    sort: 'new',
     timestamp: Session.get('feedTimestamp'),
   };
 
-  if (Meteor.subscribe('feed.posts', subscriptionParams).ready()) {
-    console.log('retriggering feed sub');
+  if (Meteor.subscribe('feed.newPosts', subscriptionParams).ready()) {
+    console.log('retriggering new sub');
 
     const posts = Posts.find({
       createdAt: {
-        $lte: Session.get('feedTimestamp'),
+        $gt: Session.get('feedTimestamp'),
       },
-    }, {
-    sort: {
-      createdAt: -1,
-    },
-  }).fetch();
-
+    }).fetch();
     onData(null, { posts });
   };
 
 }
 
-export const FeedContainer = compose(getTrackerLoader(reactiveMapper))(FeedLayout);
+export const NewPostsContainer = compose(getTrackerLoader(reactiveMapper))(NewPostsNotice);

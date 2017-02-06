@@ -7,11 +7,27 @@ Meteor.publish('feed.posts', function(subscriptionParams) {
   check(subscriptionParams, Object);
   check(subscriptionParams.sort, String);
 
-  return Posts.find({}, {
+  return Posts.find({
+    createdAt: {
+      $lte: subscriptionParams.timestamp,
+    },
+  }, {
     sort: {
       createdAt: -1,
     },
     limit: 10,
+  });
+
+});
+
+Meteor.publish('feed.newPosts', function(subscriptionParams) {
+
+  check(subscriptionParams, Object);
+
+  return Posts.find({
+    createdAt: {
+      $gt: subscriptionParams.timestamp,
+    },
   });
 
 });
