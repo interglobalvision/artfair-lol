@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import { FeedPost } from '/imports/components/posts/FeedPost.jsx';
 
+import { NewPostsContainer } from '/imports/containers/NewPostsContainer.jsx';
+
 export class FeedLayout extends Component {
 
   render() {
@@ -9,6 +11,7 @@ export class FeedLayout extends Component {
     if (this.props.posts) {
       return (
         <section id='feed'>
+          <NewPostsContainer />
           <div className='feed-posts'>
           {this.props.posts.map((post, key) => (
             <FeedPost post={post} key={key} />
