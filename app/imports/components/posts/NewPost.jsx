@@ -34,13 +34,11 @@ export class NewPost extends Component {
     const photo = this.state.photo;
     const caption = sanitizeHtml(this.state.caption);
     const fingerprint = this.state.fingerprint;
-    const comments = [];
 
     addPost.call({
       photo,
       caption,
       fingerprint,
-      comments,
     });
 
     return false;
