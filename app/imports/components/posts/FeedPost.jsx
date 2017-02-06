@@ -25,14 +25,8 @@ export class FeedPost extends Component {
 
         <Caption caption={this.props.post.caption} />
 
-        <div className='grid-row post-comments'>
-          <div className='grid-item item-s-12'>
-            <div className='padding-bottom-tiny font-color-grey'>
-              <a href={'/post/' + this.props.post._id} className='font-size-small'>See all comments</a>
-            </div>
-            <Comments comments={this.props.post.comments} />
-          </div>
-        </div>
+        <Comments comments={this.props.post.comments} commentsLimit={3} postId={this.props.post._id} />
+
         <div className='grid-row post-date padding-top-tiny'>
           <div className='grid-item item-s-12 font-uppercase font-color-grey font-size-small'>
             {moment(this.props.post.createdAt).fromNow()}
