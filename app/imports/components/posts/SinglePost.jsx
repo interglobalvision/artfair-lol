@@ -32,7 +32,7 @@ export class SinglePost extends Component {
           </div>
         </div>
 
-        <Comments comments={this.props.post.comments} postId={this.props.post._id} />
+        <Comments comments={this.props.post.comments} limitComments={false} postId={this.props.post._id} />
 
         <NewComment postId={this.props.post._id} />
 

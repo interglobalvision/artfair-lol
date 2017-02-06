@@ -25,7 +25,7 @@ export class FeedPost extends Component {
 
         <Caption caption={this.props.post.caption} />
 
-        <Comments comments={this.props.post.comments} commentsLimit={3} postId={this.props.post._id} />
+        <Comments comments={this.props.post.comments} limitComments={true} postId={this.props.post._id} />
 
         <div className='grid-row post-date padding-top-tiny'>
           <div className='grid-item item-s-12 font-uppercase font-color-grey font-size-small'>
