@@ -8,7 +8,7 @@ export class NewComment extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {comment: ''};
 
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -28,10 +28,14 @@ export class NewComment extends Component {
 
     const comment = sanitizeHtml(this.state.comment);
 
-    addComment.call({
-      postId: this.props.postId,
-      comment,
-    }, this.clearInput);
+    if (comment !== '') {
+
+      addComment.call({
+        postId: this.props.postId,
+        comment,
+      }, this.clearInput);
+
+    }
 
     return false;
   }
