@@ -23,7 +23,8 @@ export class NewPost extends Component {
       photo,
       fingerprint,
       locationApproved: false,
-      locationChecking: true
+      locationChecking: true,
+      uploading: false
     };
 
     this.checkGeofence = this.checkGeofence.bind(this);
@@ -76,13 +77,38 @@ export class NewPost extends Component {
 
   }
 
-  getSlingshowUploader() {
+  getSlingshotUploader() {
     return new Slingshot.Upload('imageUpload');
   }
 
   uploadFile() {
-    const uploader = this.getSlingshowUploader();
+    uploader = this.getSlingshotUploader();
     const photo = this.state.photo;
+
+    this.setState({
+      'uploading': true
+    });
+
+    this.progressBarStyle = {
+      width: '0%'
+    };
+
+    let progress = 0;
+
+    this.timer = setInterval(() => {
+      if(!isNaN(uploader.progress())) {
+        progress = Math.ceil(uploader.progress() * 100);
+      }
+
+      this.setState({progress: progress});
+      this.progressBarStyle = {
+        width: progress + '%'
+      };
+
+      if (this.state.progress === 100) {
+        clearInterval(this.timer);
+      }
+    }, 100);
 
     // Use fetch to convert base64 to blob
     fetch(photo)
@@ -113,8 +139,14 @@ export class NewPost extends Component {
           console.log(err);
         }
 
+        this.setState({
+          'uploading': false
+        });
+
+        clearInterval(this.timer);
+
         Session.set('feedTimestamp', new Date());
-        
+
         FlowRouter.go('home');
 
       });
@@ -123,7 +155,7 @@ export class NewPost extends Component {
   }
 
   disableElem() {
-    if (this.state.locationChecking || !this.state.locationApproved) {
+    if (this.state.locationChecking || !this.state.locationApproved || this.state.uploading) {
       return true;
     }
 
@@ -162,6 +194,12 @@ export class NewPost extends Component {
             </div>
           </div>
         </form>
+        {this.state.uploading &&
+          <div id="upload-progress-holder" className="grid-row justify-center align-items-center">
+            <div id="upload-progress-bar" style={this.progressBarStyle}></div>
+            <div className="grid-item item-s-12 no-gutter text-align-center font-bold">{this.state.progress}%</div>
+          </div>
+        }
       </section>
     );
   }
