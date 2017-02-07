@@ -22,7 +22,7 @@ export class SinglePost extends Component {
 
         <PostPhoto photo={this.props.post.photo} />
 
-        <Actions upVotes={this.props.post.upVotes} downVotes={this.props.post.downVotes} postId={this.props.post._id} />
+        <Actions upVotes={this.props.post.upVotes} downVotes={this.props.post.downVotes} postId={this.props.post._id} singlePost={true} />
 
         <Caption caption={this.props.post.caption} />
 
