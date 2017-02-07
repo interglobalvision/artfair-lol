@@ -118,6 +118,14 @@ export class NewPost extends Component {
     }
   }
 
+  disableButton() {
+    if (this.state.locationChecking || !this.state.locationApproved) {
+      return true;
+    }
+
+    return false;
+  }
+
   onInputChange(event) {
     this.setState({caption: event.target.value});
   }
@@ -135,27 +143,17 @@ export class NewPost extends Component {
   render() {
     return (
       <section>
+        <div className="grid-row padding-top-small padding-bottom-small justify-center">
         {this.state.locationChecking &&
-          <div className="grid-row margin-bottom-small">
-            <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
-              Looking for location...
-            </div>
-          </div>
+            <span><img className='icon-small' src='/icons/location_searching.svg' />Finding your location...</span>
         }
         {!this.state.locationChecking && this.state.locationApproved &&
-          <div className="grid-row margin-bottom-small">
-            <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
-              Approved at: {this.state.location}
-            </div>
-          </div>
+            <span><img className='icon-small' src='/icons/location_on.svg' />{this.state.location}</span>
         }
         {!this.state.locationChecking && !this.state.locationApproved &&
-          <div className="grid-row margin-bottom-small">
-            <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
-              DENIED: Go to an ART FAIR to post
-            </div>
-          </div>
+            <span><img className='icon-small' src='/icons/location_off.svg' />You must be at an art fair to post</span>
         }
+        </div>
         <div className="grid-row margin-bottom-small">
           <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
             <img className="post-image" src={this.state.photo} />
@@ -165,7 +163,7 @@ export class NewPost extends Component {
           <textarea className="comment-textarea margin-bottom-small" placeholder="Add a caption" value={this.state.caption} onChange={this.onInputChange} />
           <div className="grid-row margin-bottom-basic">
             <div className="grid-item item-s-12 text-align-center">
-              <input className="button font-size-mid" type="submit" value="POST" />
+              <input className='button font-size-mid' type="submit" value="POST" disabled={this.disableButton} />
             </div>
           </div>
         </form>
