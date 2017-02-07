@@ -26,7 +26,7 @@ export class SinglePost extends Component {
 
         <Caption caption={this.props.post.caption} />
 
-        <TimeAgo createdAt={this.props.post.createdAt} />
+        <TimeAgo createdAt={this.props.post.createdAt} postId={this.props.post._id} />
 
         <Comments comments={this.props.post.comments} limitComments={false} postId={this.props.post._id} />
 
