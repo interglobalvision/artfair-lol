@@ -22,7 +22,7 @@ export const addPost = new ValidatedMethod({
 
   run({photo, fingerprint, location, caption}) {
 
-    let hashtagsArray = [];
+    let hashtagsArray;
 
     if (caption !== undefined) {
 
