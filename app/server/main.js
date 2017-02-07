@@ -13,6 +13,11 @@ import '/imports/api/commentsMethods.js';
 import '/imports/api/votesMethods.js';
 import '/imports/api/adminMethods.js';
 
+// Cron
+import '/imports/startup/server/cron.js';
+
 Meteor.startup(() => {
-  // code to run on server at startup
+
+  SyncedCron.start();
+
 });

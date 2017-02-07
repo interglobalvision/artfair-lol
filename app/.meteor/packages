@@ -29,4 +29,5 @@ session
 edgee:slingshot
 check
 momentjs:moment
+percolate:synced-cron
 accounts-password
