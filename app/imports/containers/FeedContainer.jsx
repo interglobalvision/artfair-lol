@@ -21,17 +21,47 @@ function getTrackerLoader(reactiveMapper) {
       return handler.stop();
     };
   };
-}
+};
 
 function reactiveMapper(props, onData) {
 
+  // Set feedTimestamp, used to differentiate new posts when added
+  if (!Session.get('feedTimestamp')) {
+    Session.set('feedTimestamp', new Date());
+  }
+
+
   let subscriptionParams = {
-    sort: 'new',
+    sort: 'new', // NOT BEIGN USED JUST YET
+    timestamp: Session.get('feedTimestamp'),
   };
 
-  if (Meteor.subscribe('feed.posts', subscriptionParams).ready()) {
-    const posts = Posts.find({}).fetch();
-    onData(null, { posts });
+  let subscriptionNewPostsParams = {
+    timestamp: Session.get('feedTimestamp'),
+  };
+
+  if (
+    Meteor.subscribe('feed.posts', subscriptionParams).ready() && // Subscription for feed posts
+    Meteor.subscribe('feed.newPosts', subscriptionNewPostsParams).ready() // Subscription for new posts
+  ) {
+
+    const posts = Posts.find({
+      createdAt: {
+        $lte: Session.get('feedTimestamp'),
+      },
+    }, {
+      sort: {
+        createdAt: -1,
+      },
+    }).fetch();
+
+    const newPosts = Posts.find({
+      createdAt: {
+        $gt: Session.get('feedTimestamp'),
+      },
+    }).fetch().length;
+
+    onData(null, { posts, newPosts });
   };
 
 }
