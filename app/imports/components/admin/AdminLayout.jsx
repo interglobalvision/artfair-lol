@@ -2,25 +2,35 @@ import React, { Component } from 'react';
 
 import { AdminPost } from '/imports/components/admin/AdminPost.jsx';
 
-import { NewPostsNotice } from '/imports/components/feed/NewPostsNotice.jsx';
-
 export class AdminLayout extends Component {
+  constructor(props) {
+    super(props);
+
+    this.morePosts = this.morePosts.bind(this);
+  }
+
+  morePosts() {
+    Session.set('pagination', (Session.get('pagination') + 1));
+  }
 
   render() {
 
     if (this.props.posts) {
       return (
         <section id='admin'>
-          <NewPostsNotice newPosts={this.props.newPosts} />
-          <div className='admin-posts'>
+          <div className='admin-posts grid-row'>
           {this.props.posts.map((post, key) => (
             <AdminPost post={post} key={key} />
           ))}
           </div>
 
-          <div className='feed-pagination'>
-            <h1>**more posts ++</h1>
-          </div>
+          {this.props.morePosts &&
+            <div className='admin-posts grid-row'>
+              <div className='grid-item item-s-12' onClick={this.morePosts}>
+                More Posts
+              </div>
+            </div>
+          }
         </section>
       )
     } else {

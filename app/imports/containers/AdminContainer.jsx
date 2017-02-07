@@ -25,43 +25,35 @@ function getTrackerLoader(reactiveMapper) {
 
 function reactiveMapper(props, onData) {
 
-  // Set feedTimestamp, used to differentiate new posts when added
-  if (!Session.get('feedTimestamp')) {
-    Session.set('feedTimestamp', new Date());
+  if (!Session.get('pagination')) {
+    Session.set('pagination', 1);
   }
 
-
   let subscriptionParams = {
-    sort: 'new', // NOT BEIGN USED JUST YET
-    timestamp: Session.get('feedTimestamp'),
-  };
+    pagination: Session.get('pagination'),
+  }
 
-  let subscriptionNewPostsParams = {
-    timestamp: Session.get('feedTimestamp'),
-  };
+  if (Meteor.subscribe('admin.posts', subscriptionParams).ready()) {
 
-  if (
-    Meteor.subscribe('feed.posts', subscriptionParams).ready() && // Subscription for feed posts
-    Meteor.subscribe('feed.newPosts', subscriptionNewPostsParams).ready() // Subscription for new posts
-  ) {
+    let limit = (subscriptionParams.pagination * Meteor.settings.public.postsPerPage);
 
-    const posts = Posts.find({
-      createdAt: {
-        $lte: Session.get('feedTimestamp'),
-      },
-    }, {
+    const posts = Posts.find({}, {
       sort: {
         createdAt: -1,
       },
+      limit,
     }).fetch();
 
-    const newPosts = Posts.find({
-      createdAt: {
-        $gt: Session.get('feedTimestamp'),
+    const availablePosts = Posts.find({}, {
+      sort: {
+        createdAt: -1,
       },
+      limit: limit + 1,
     }).fetch().length;
 
-    onData(null, { posts, newPosts });
+    const morePosts = availablePosts - limit >= 1 ? true : false;
+
+    onData(null, { posts, morePosts });
   };
 
 }
