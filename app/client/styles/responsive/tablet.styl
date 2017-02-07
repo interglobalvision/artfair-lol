@@ -1,5 +1,4 @@
-$header-height = 81px
-$footer-height = 83px
+$header-height = 69px
 
 p
   max-width: 600px
@@ -26,14 +25,17 @@ input, textarea
   .logo
     margin: 0 $margin-tiny
 
+#header
+  padding: $margin-tiny 0
+
 #app-logo
   height: 24px
 
 #main-content
-  min-height: "calc(100vh - %s)" % ($header-height + $footer-height)
+  min-height: "calc(100vh - %s)" % ($header-height)
 
 .post-image
-  max-height: "calc(90vh - %s)" % ($header-height + $footer-height)
+  max-height: 100vh
 
 .comment-textarea
   padding: $margin-tiny

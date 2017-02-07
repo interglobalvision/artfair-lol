@@ -1,5 +1,4 @@
-$header-height = 69px
-$footer-height = 68px
+$header-height = 57px
 
 p
   max-width: 520px
@@ -25,6 +24,9 @@ p
   .logo
     margin: 0 $margin-tiny
 
+#header
+  padding: $margin-tiny 0
+
 #header-nav
   min-height: 32px
 
@@ -32,10 +34,10 @@ p
   height: 20px
 
 #main-content
-  min-height: "calc(100vh - %s)" % ($header-height + $footer-height)
+  min-height: "calc(100vh - %s)" % ($header-height)
 
 .post-image
-  max-height: "calc(90vh - %s)" % ($header-height + $footer-height)
+  max-height: 100vh
 
 .comment-textarea
   padding: $margin-tiny
