@@ -102,6 +102,7 @@ export class NewPost extends Component {
   handleUpload(error, url) {
     const caption = this.state.caption;
     const fingerprint = this.state.fingerprint;
+    const location = this.state.location;
 
     if (error) {
       console.log(error);
@@ -113,6 +114,7 @@ export class NewPost extends Component {
         caption,
         photo: url,
         fingerprint,
+        location
       }, (err, res) => {
         if (err) {
           console.log(err);
@@ -132,7 +134,9 @@ export class NewPost extends Component {
   onSubmitForm(event) {
     event.preventDefault();
 
-    this.uploadFile();
+    if (this.state.locationApproved) {
+      this.uploadFile();
+    }
 
     return false;
   }
@@ -154,6 +158,13 @@ export class NewPost extends Component {
             </div>
           </div>
         }
+        {!this.state.locationChecking && !this.state.locationApproved &&
+          <div className="grid-row margin-bottom-small">
+            <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
+              DENIED: Go to an ART FAIR to post
+            </div>
+          </div>
+        }
         <div className="grid-row margin-bottom-small">
           <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
             <img className="post-image" src={this.state.photo} />
@@ -163,7 +174,7 @@ export class NewPost extends Component {
           <textarea className="comment-textarea margin-bottom-small" placeholder="Add a caption" value={this.state.caption} onChange={this.onInputChange} />
           <div className="grid-row margin-bottom-basic">
             <div className="grid-item item-s-12 text-align-center">
-              <input className="button font-size-mid" type="submit" value="POST" disabled={this.state.locationApproved} />
+              <input className="button font-size-mid" type="submit" value="POST" />
             </div>
           </div>
         </form>

@@ -11,19 +11,23 @@ export const addPost = new ValidatedMethod({
     fingerprint: {
       type: String,
     },
+    location: {
+      type: String,
+    },
     caption: {
       type: String,
       optional: true,
     },
   }).validator(),
 
-  run({photo, fingerprint, caption}) {
+  run({photo, fingerprint, location, caption}) {
 
     let captionSantized = sanitizeHtml(caption);
 
     Posts.insert({
       photo,
       fingerprint,
+      location,
       caption: captionSantized,
     });
   }
