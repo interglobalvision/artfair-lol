@@ -6,6 +6,8 @@ import sanitizeHtml from 'sanitize-html';
 
 import { addPost } from '/imports/api/photosMethods.js';
 
+import { LocationNotice } from '/imports/components/posts/LocationNotice.jsx';
+
 export class NewPost extends Component {
   constructor(props) {
     super(props);
@@ -118,7 +120,7 @@ export class NewPost extends Component {
     }
   }
 
-  disableButton() {
+  disableElem() {
     if (this.state.locationChecking || !this.state.locationApproved) {
       return true;
     }
@@ -143,27 +145,18 @@ export class NewPost extends Component {
   render() {
     return (
       <section>
-        <div className="grid-row padding-top-small padding-bottom-small justify-center">
-        {this.state.locationChecking &&
-            <span><img className='icon-small' src='/icons/location_searching.svg' />Finding your location...</span>
-        }
-        {!this.state.locationChecking && this.state.locationApproved &&
-            <span><img className='icon-small' src='/icons/location_on.svg' />{this.state.location}</span>
-        }
-        {!this.state.locationChecking && !this.state.locationApproved &&
-            <span><img className='icon-small' src='/icons/location_off.svg' />You must be at an art fair to post</span>
-        }
-        </div>
+        <LocationNotice checking={this.state.locationChecking} approved={this.state.locationApproved} location={this.state.location} />
+
         <div className="grid-row margin-bottom-small">
           <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
             <img className="post-image" src={this.state.photo} />
           </div>
         </div>
         <form onSubmit={this.onSubmitForm}>
-          <textarea className="comment-textarea margin-bottom-small" placeholder="Add a caption" value={this.state.caption} onChange={this.onInputChange} />
+          <textarea className="comment-textarea margin-bottom-small" placeholder="Add a caption" value={this.state.caption} onChange={this.onInputChange} disabled={this.disableElem} />
           <div className="grid-row margin-bottom-basic">
             <div className="grid-item item-s-12 text-align-center">
-              <input className='button font-size-mid' type="submit" value="POST" disabled={this.disableButton} />
+              <input className='button font-size-mid' type="submit" value="POST" disabled={this.disableElem} />
             </div>
           </div>
         </form>
