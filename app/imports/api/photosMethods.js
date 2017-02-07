@@ -20,14 +20,14 @@ export const addPost = new ValidatedMethod({
   run({photo, fingerprint, caption}) {
 
     let captionSantized = sanitizeHtml(caption);
-    let votes = 0;
+    let emptyVotes = [];
 
     Posts.insert({
       photo,
       fingerprint,
       caption: captionSantized,
-      upVotes: votes,
-      downVotes: votes,
+      upVotes: emptyVotes,
+      downVotes: emptyVotes,
     });
   }
 });
