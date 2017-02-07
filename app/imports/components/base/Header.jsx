@@ -4,7 +4,7 @@ import Sticky from 'react-stickynode';
 
 export const Header = () => (
   <Sticky>
-    <header id='header' className=' border-bottom-grey line-height-tighter'>
+    <header id='header' className='border-bottom-grey line-height-tighter'>
       <div className='container'>
         <nav id='header-nav' className='grid-row align-items-center text-align-center'>
           <div className='grid-item item-s-2'>
