@@ -32,8 +32,10 @@ export class FeedLayout extends Component {
   handleScroll(event) {
     if (document.body.scrollTop + window.innerHeight === document.getElementById('main-container').clientHeight) {
       if(this.props.morePosts) {
-        let pagination = Session.get('pagination') || 1;
-        Session.set('pagination', pagination + 1);
+        setTimeout( () => {
+          let pagination = Session.get('pagination') || 1;
+          Session.set('pagination', pagination + 1);
+        }, 600);
       } else {
         this.unbindScroll();
       }
@@ -54,8 +56,8 @@ export class FeedLayout extends Component {
           </div>
 
           {this.props.morePosts &&
-            <div className='feed-pagination'>
-              <h1>**more posts ++</h1>
+            <div id='feed-pagination' className='text-align-center padding-top-small padding-bottom-small'>
+              <img src="/icons/spinner.svg" id="spinner" className="icon spin" />
             </div>
           }
         </section>
