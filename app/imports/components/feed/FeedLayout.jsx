@@ -5,6 +5,26 @@ import { FeedPost } from '/imports/components/posts/FeedPost.jsx';
 import { NewPostsNotice } from '/imports/components/feed/NewPostsNotice.jsx';
 
 export class FeedLayout extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+
+  handleScroll(event) {
+    if (document.body.scrollTop + window.innerHeight === document.getElementById('main-container').clientHeight) {
+      console.log('more posts');
+      let pagination = Session.get('pagination') || 1;
+      Session.set('pagination', pagination + 1);
+    }
+  }
+
 
   render() {
 
@@ -13,9 +33,9 @@ export class FeedLayout extends Component {
         <section id='feed'>
           <NewPostsNotice newPosts={this.props.newPosts} />
           <div className='feed-posts'>
-          {this.props.posts.map((post, key) => (
-            <FeedPost post={post} key={key} />
-          ))}
+            {this.props.posts.map((post, key) => (
+              <FeedPost post={post} key={key} />
+            ))}
           </div>
 
           <div className='feed-pagination'>
