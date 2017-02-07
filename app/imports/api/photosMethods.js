@@ -26,7 +26,8 @@ export const addPost = new ValidatedMethod({
       photo,
       fingerprint,
       caption: captionSantized,
-      votes: votes,
+      upVotes: votes,
+      downVotes: votes,
     });
   }
 });
