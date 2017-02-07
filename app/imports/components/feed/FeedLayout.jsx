@@ -7,21 +7,39 @@ import { NewPostsNotice } from '/imports/components/feed/NewPostsNotice.jsx';
 export class FeedLayout extends Component {
   constructor(props) {
     super(props);
+
+    this.handleScroll = this.handleScroll.bind(this);
   }
 
   componentWillMount() {
-    window.addEventListener("scroll", this.handleScroll);
+    Session.set('pagination', 1);
+    // Check the size of `availablePosts` minus `limit`.
+    // If 1 or more, it means theres more posts available to load
+    //
+    // If 0 or less, it means we have reached the end of the posts
+    this.bindScroll();
   }
 
   componentWillUnmount() {
+    this.unbindScroll();
+  }
+
+  bindScroll() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+
+  unbindScroll() {
     window.removeEventListener("scroll", this.handleScroll);
   }
 
   handleScroll(event) {
     if (document.body.scrollTop + window.innerHeight === document.getElementById('main-container').clientHeight) {
-      console.log('more posts');
-      let pagination = Session.get('pagination') || 1;
-      Session.set('pagination', pagination + 1);
+      if(this.props.morePosts) {
+        let pagination = Session.get('pagination') || 1;
+        Session.set('pagination', pagination + 1);
+      } else {
+        this.unbindScroll();
+      }
     }
   }
 
