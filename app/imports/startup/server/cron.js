@@ -9,14 +9,9 @@ SyncedCron.add({
     return parser.text(Meteor.settings.public.ranking.interval);
   },
   job: function() {
-
-    console.log('cronny');
-
-    let timeLimit = moment().subtract(Meteor.settings.public.ranking.hoursLimit , 'hours');
-
-    console.log('timeLimit', timeLimit.calendar());
-
-    let posts = Posts.find({
+    const now = moment();
+    const timeLimit = now.subtract(Meteor.settings.public.ranking.hoursLimit , 'hours');
+    const posts = Posts.find({
       createdAt: {
         $gt: timeLimit.toDate(),
       },
@@ -26,19 +21,15 @@ SyncedCron.add({
       },
     });
 
-    const now = moment();
-
     posts.forEach(function(post) {
 
       const likes = post.upVotes.length - post.downVotes.length;
 
-      console.log('likes', likes);
+      const likeRank = (likes + 1) * Meteor.settings.public.ranking.likesGravity;
 
       const created = moment(post.createdAt);
 
-      const hoursSinceCreated = now.diff(created, 'hours');
-
-      console.log('hoursSinceCreated', hoursSinceCreated);
+      const sinceCreated = created.diff(now);
 
       let commentCount = 0;
 
@@ -46,21 +37,13 @@ SyncedCron.add({
         commentCount = post.comments.length;
       }
 
-      console.log('commentCount', commentCount);
-
-      const timeRank = Math.pow((hoursSinceCreated + 2), Meteor.settings.public.ranking.timeGravity);
-
-      console.log('timeRank', timeRank);
+      const timeRank = Math.pow(((sinceCreated / 1000) / 60), Meteor.settings.public.ranking.timeGravity);
 
       const commentRank = Math.pow((commentCount + 1), Meteor.settings.public.ranking.commentGravity);
 
-      console.log('commentRank', commentRank);
+      const ranking = likeRank + timeRank + commentRank;
 
-      const ranking = ( (likes + 1) * Meteor.settings.public.ranking.likesGravity ) + timeRank + commentRank;
-
-      console.log('ranking idea', ranking);
-
-//       console.log(post);
+      Posts.update(post._id, {$set: {ranking}});
 
     });
 
