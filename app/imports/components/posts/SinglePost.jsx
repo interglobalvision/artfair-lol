@@ -8,13 +8,21 @@ import { Comments } from '/imports/components/comments/Comments.jsx';
 import { NewComment } from '/imports/components/comments/NewComment.jsx';
 
 export class SinglePost extends Component {
+  componentDidMount() {
+    if (this.props.scrollTo !== undefined) {
+      $('html, body').stop().animate({ scrollTop: ( $('#' + this.props.scrollTo).offset().top - 100 )}, 300);
+    } else {
+      $('html, body').stop().animate({ scrollTop: 0 }, 300);
+    }
+  }
+
   render() {
     return (
       <div className='post-feed padding-bottom-mid'>
 
         <PostPhoto photo={this.props.post.photo} />
 
-        <Actions upVotes={this.props.post.upVotes} downVotes={this.props.post.downVotes} postId={this.props.post._id} />
+        <Actions upVotes={this.props.post.upVotes} downVotes={this.props.post.downVotes} postId={this.props.post._id} singlePost={true} />
 
         <Caption caption={this.props.post.caption} />
 

@@ -8,6 +8,11 @@ import { mount } from 'react-mounter';
 
 import { MainContainer } from '/imports/containers/MainContainer.jsx';
 import { FeedContainer } from '/imports/containers/FeedContainer.jsx';
+import { UserLogin } from '/imports/components/user/UserLogin.jsx';
+
+const scrollToTop = () => {
+  $('html, body').stop().animate({ scrollTop: 0 }, 300);
+};
 
 // Public Routes
 const publicRoutes = FlowRouter.group({
@@ -16,6 +21,7 @@ const publicRoutes = FlowRouter.group({
 
 publicRoutes.route('/', {
   name: 'home',
+  triggersEnter: [scrollToTop],
   action() {
     mount(MainContainer, {
       //content: <UserLogin />,
@@ -25,19 +31,32 @@ publicRoutes.route('/', {
   },
 });
 
-/*
+publicRoutes.route('/login', {
+  name: 'login',
+  action() {
+
+    if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
+      return FlowRouter.go('/admin');
+    }
+
+    mount(MainContainer, {
+      content: <UserLogin />,
+    });
+  },
+});
+
 publicRoutes.route('/logout', {
   name: 'logout',
   action() {
     Meteor.logout(() => {
-      FlowRouter.go('/');
+      FlowRouter.go('/login');
     });
   },
 });
-*/
 
 publicRoutes.route('/not-found', {
   name: 'not-found',
+  triggersEnter: [scrollToTop],
   action() {
     mount(MainContainer, {
       content: <Page404 />,
@@ -48,6 +67,7 @@ publicRoutes.route('/not-found', {
 
 publicRoutes.route('/unauthorized', {
   name: 'unauthorized',
+  triggersEnter: [scrollToTop],
   action() {
     mount(MainContainer, {
       content: <Page401 />,

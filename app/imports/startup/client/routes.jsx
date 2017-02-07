@@ -4,6 +4,7 @@ import { mount } from 'react-mounter';
 
 import '/imports/startup/client/routes/public.jsx';
 import '/imports/startup/client/routes/posts.jsx';
+import '/imports/startup/client/routes/admin.jsx';
 
 // Other Routes stuff
 FlowRouter.wait();
@@ -15,11 +16,11 @@ Tracker.autorun(() => {
 });
 
 // Scroll to top on route change
-const scrollToTop = () => {
+/*const scrollToTop = () => {
   $('html, body').stop().animate({ scrollTop: 0 }, 300);
-};
+};*/
 
-FlowRouter.triggers.enter([scrollToTop]);
+//FlowRouter.triggers.enter([scrollToTop]);
 
 // Not found routes
   /*

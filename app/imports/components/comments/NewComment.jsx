@@ -42,7 +42,7 @@ export class NewComment extends Component {
 
   render() {
     return (
-      <form onSubmit={this.onSubmitForm}>
+      <form id="new-comment" onSubmit={this.onSubmitForm}>
         <textarea className="comment-textarea margin-bottom-small" placeholder="Add a comment" value={this.state.comment} onChange={this.onInputChange} />
         <div className="grid-row margin-bottom-basic">
           <div className="grid-item item-s-12 text-align-center">
