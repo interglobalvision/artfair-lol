@@ -17,6 +17,8 @@ const publicRoutes = FlowRouter.group({
 publicRoutes.route('/', {
   name: 'home',
   action() {
+    Session.set('feedState', 'New')
+
     mount(MainContainer, {
       //content: <UserLogin />,
       content: <FeedContainer />,
@@ -38,6 +40,8 @@ publicRoutes.route('/logout', {
 publicRoutes.route('/not-found', {
   name: 'not-found',
   action() {
+    Session.set('feedState', '404')
+
     mount(MainContainer, {
       content: <Page404 />,
     });
@@ -47,6 +51,8 @@ publicRoutes.route('/not-found', {
 publicRoutes.route('/unauthorized', {
   name: 'unauthorized',
   action() {
+    Session.set('feedState', '501')
+
     mount(MainContainer, {
       content: <Page401 />,
     });
