@@ -13,10 +13,7 @@ export class FeedLayout extends Component {
 
   componentWillMount() {
     Session.set('pagination', 1);
-    // Check the size of `availablePosts` minus `limit`.
-    // If 1 or more, it means theres more posts available to load
-    //
-    // If 0 or less, it means we have reached the end of the posts
+
     this.bindScroll();
   }
 
@@ -56,9 +53,11 @@ export class FeedLayout extends Component {
             ))}
           </div>
 
-          <div className='feed-pagination'>
-            <h1>**more posts ++</h1>
-          </div>
+          {this.props.morePosts &&
+            <div className='feed-pagination'>
+              <h1>**more posts ++</h1>
+            </div>
+          }
         </section>
       )
     } else {
