@@ -24,14 +24,21 @@ export const addPost = new ValidatedMethod({
 
     let captionSantized = sanitizeHtml(caption);
     let emptyVotes = [];
+    let hashtagsArray = captionSantized.match(/#\S+/g);
 
-    Posts.insert({
+    let data = {
       photo,
       fingerprint,
       location,
       caption: captionSantized,
       upVotes: emptyVotes,
       downVotes: emptyVotes,
-    });
+    }
+
+    if (hashtagsArray) {
+      data.hashtags = hashtagsArray;
+    }
+
+    Posts.insert(data);
   }
 });
