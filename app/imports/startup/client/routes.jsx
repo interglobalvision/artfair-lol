@@ -15,11 +15,11 @@ Tracker.autorun(() => {
 });
 
 // Scroll to top on route change
-const scrollToTop = () => {
+/*const scrollToTop = () => {
   $('html, body').stop().animate({ scrollTop: 0 }, 300);
-};
+};*/
 
-FlowRouter.triggers.enter([scrollToTop]);
+//FlowRouter.triggers.enter([scrollToTop]);
 
 // Not found routes
   /*
