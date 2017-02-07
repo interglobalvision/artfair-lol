@@ -9,7 +9,7 @@ export class PostLayout extends Component {
       return (
         <section id='post'>
           <div className='post'>
-            <SinglePost post={this.props.post} />
+            <SinglePost post={this.props.post} scrollTo={this.props.scrollTo} />
           </div>
         </section>
       )
