@@ -30,18 +30,24 @@ function reactiveMapper(props, onData) {
     Session.set('feedTimestamp', new Date());
   }
 
+  let sort = 'new';
+
+  if (props.hashtag) {
+    sort = '#' + props.hashtag
+  }
+
   if (!Session.get('pagination')) {
     Session.set('pagination', 1);
   }
 
-
   let subscriptionParams = {
-    sort: 'new', // NOT BEIGN USED JUST YET
+    sort,
     timestamp: Session.get('feedTimestamp'),
     pagination: Session.get('pagination'),
   };
 
   let subscriptionNewPostsParams = {
+    sort,
     timestamp: Session.get('feedTimestamp'),
   };
 

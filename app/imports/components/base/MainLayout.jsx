@@ -22,7 +22,7 @@ export class MainLayout extends Component {
         {!this.state.hasVisited &&
           <About />
         }
-        <Header />
+        <Header leftLabel={this.props.headerLeftLabel} />
         <div id="main-content" className='border-bottom-grey'>
           <div className="container">
             {this.props.content}
