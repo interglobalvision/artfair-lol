@@ -24,7 +24,7 @@ export class PhotoInput extends Component {
 
       Session.set('newPhoto', photo);
 
-      FlowRouter.go('newPost');
+      FlowRouter.go('/new');
     };
 
     reader.readAsDataURL(this.input.files[0]);
