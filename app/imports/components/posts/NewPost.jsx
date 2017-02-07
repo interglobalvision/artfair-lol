@@ -60,6 +60,8 @@ export class NewPost extends Component {
           console.log(err);
         }
 
+        Session.set('feedTimestamp', new Date());
+        
         FlowRouter.go('home');
 
       });
