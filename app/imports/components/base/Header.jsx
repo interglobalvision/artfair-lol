@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { PhotoInput } from '/imports/components/PhotoInput.jsx';
 import Sticky from 'react-stickynode';
 
-export const Header = () => (
+export const Header = (props) => (
   <Sticky>
     <header id='header' className='border-bottom-grey line-height-tighter'>
       <div className='container'>
         <nav id='header-nav' className='grid-row align-items-center text-align-center'>
           <div className='grid-item item-s-2'>
-            <button className='button button-small font-size-small'>{Session.get('feedState')}</button>
+            <button className='button button-small font-size-small'>{props.leftLabel}</button>
           </div>
           <div className='grid-item item-s-8'>
             <a href='/'><img id='app-logo' src='/icons/artfair-lol-logo.svg' className='icon' /></a>

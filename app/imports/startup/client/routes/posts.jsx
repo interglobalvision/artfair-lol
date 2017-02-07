@@ -20,6 +20,7 @@ postsRoutes.route('/new', {
 
     mount(MainContainer, {
       content: <NewPost />,
+      headerLeftLabel: 'New',
     });
   },
 });
@@ -27,10 +28,10 @@ postsRoutes.route('/new', {
 postsRoutes.route('/hashtag/:hashtag', {
   name: 'newPost',
   action(params) {
-    Session.set('feedState', '#' + params.hashtag)
 
     mount(MainContainer, {
       content: <FeedContainer hashtag={params.hashtag}/>,
+      headerLeftLabel: '#' + params.hashtag,
     });
   },
 });
@@ -38,11 +39,10 @@ postsRoutes.route('/hashtag/:hashtag', {
 postsRoutes.route('/post/:id', {
   name: 'singlePost',
   action(params) {
-    Session.set('feedState', 'Post')
-
     mount(MainContainer, {
       //content: <UserLogin />,
       content: <PostContainer postId={params.id} />,
+      headerLeftLabel: 'Post',
     });
   },
 });
