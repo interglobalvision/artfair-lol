@@ -17,8 +17,8 @@ export class NewPostsNotice extends Component {
     }
 
     return (
-      <div className="grid-row">
-        <div className="grid-item item-s-12 margin-top-small margin-bottom-small text-align-center">
+      <div id='new-posts-notice' className="grid-row align-items-center">
+        <div className="grid-item item-s-12 text-align-center">
           <a onClick={this.resetFeedTimestamp}>View {this.props.newPosts} new post{this.props.newPosts > 1 ? 's' : ''}</a>
         </div>
       </div>
