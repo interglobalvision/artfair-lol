@@ -154,6 +154,22 @@ textarea
 
 // POST
 
+#new-posts-notice
+  overflow: hidden
+  animation-fill-mode: forwards
+  animation: new-posts-notice 1s 1 ease-in-out
+  height: 70px
+  a
+    border-bottom: 1px solid $color-black
+    cursor: pointer
+    display: inline-block
+
+@keyframes new-posts-notice
+  from
+    height: 0
+  to
+    height: 70px
+
 .post
   background-color: $color-white
 
