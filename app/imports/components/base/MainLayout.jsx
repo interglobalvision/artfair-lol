@@ -23,7 +23,7 @@ export class MainLayout extends Component {
           <About />
         }
         <Header leftLabel={this.props.headerLeftLabel} />
-        <div id="main-content" className='border-bottom-grey'>
+        <div id="main-content">
           <div className="container">
             {this.props.content}
           </div>
