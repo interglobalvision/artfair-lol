@@ -187,7 +187,7 @@ export class NewPost extends Component {
           </div>
         </div>
         <form onSubmit={this.onSubmitForm}>
-          <textarea className="comment-textarea margin-bottom-small" placeholder="Add a caption" value={this.state.caption} onChange={this.onInputChange} disabled={this.disableElem()} />
+          <textarea className="comment-textarea margin-bottom-small" placeholder="Add a caption" value={this.state.caption} onChange={this.onInputChange} />
           <div className="grid-row margin-bottom-basic">
             <div className="grid-item item-s-12 text-align-center">
               <input className='button font-size-mid' type="submit" value="POST" disabled={this.disableElem()} />
