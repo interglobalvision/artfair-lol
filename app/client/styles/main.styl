@@ -76,8 +76,6 @@ img
     display: inline-block
     width: auto
     height: auto
-  &:disabled
-    opacity: .3
   &#camera-button
     border-radius: 75px
     width: 75px
@@ -94,6 +92,11 @@ input, textarea
   margin: 0 auto
   box-sizing: border-box
   outline: 0
+  &:disabled
+    opacity: .4
+    cursor: not-allowed
+    &:hover
+      opacity: .4
 
 textarea
   border-top: $border
