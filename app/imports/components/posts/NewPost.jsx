@@ -86,12 +86,11 @@ export class NewPost extends Component {
     const photo = this.state.photo;
 
     this.setState({
-      'uploading': true
+      'uploading': true,
+      progressBarStyle: {
+        width: '0%',
+      }
     });
-
-    this.progressBarStyle = {
-      width: '0%'
-    };
 
     let progress = 0;
 
@@ -100,10 +99,12 @@ export class NewPost extends Component {
         progress = Math.ceil(uploader.progress() * 100);
       }
 
-      this.setState({progress: progress});
-      this.progressBarStyle = {
-        width: progress + '%'
-      };
+      this.setState({
+        progress: progress,
+        progressBarStyle: {
+          width: progress + '%'
+        },
+      });
 
       if (this.state.progress === 100) {
         clearInterval(this.timer);
@@ -196,7 +197,7 @@ export class NewPost extends Component {
         </form>
         {this.state.uploading &&
           <div id="upload-progress-holder" className="grid-row justify-center align-items-center">
-            <div id="upload-progress-bar" style={this.progressBarStyle}></div>
+            <div id="upload-progress-bar" style={this.state.progressBarStyle}></div>
             <div className="grid-item item-s-12 no-gutter text-align-center font-bold">{this.state.progress}%</div>
           </div>
         }
