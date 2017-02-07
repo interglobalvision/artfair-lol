@@ -53,7 +53,7 @@ export class FeedLayout extends Component {
             ))}
           </div>
 
-          {!this.props.morePosts &&
+          {this.props.morePosts &&
             <div id='feed-pagination' className='text-align-center padding-top-small padding-bottom-small'>
               <img src="/icons/spinner.svg" id="spinner" className="icon spin" />
             </div>
