@@ -8,11 +8,17 @@ Meteor.publish('feed.posts', function(subscriptionParams) {
   check(subscriptionParams.sort, String);
   check(subscriptionParams.timestamp, Date);
 
-  return Posts.find({
+  let query = {
     createdAt: {
       $lte: subscriptionParams.timestamp,
     },
-  }, {
+  }
+
+  if (/([#])/.exec(subscriptionParams.sort)) {
+    query.hashtags =  subscriptionParams.sort;
+  }
+
+  return Posts.find(query, {
     sort: {
       createdAt: -1,
     },
@@ -24,12 +30,23 @@ Meteor.publish('feed.posts', function(subscriptionParams) {
 Meteor.publish('feed.newPosts', function(subscriptionParams) {
 
   check(subscriptionParams, Object);
+  check(subscriptionParams.sort, String);
   check(subscriptionParams.timestamp, Date);
 
-  return Posts.find({
+  let query = {
     createdAt: {
       $gt: subscriptionParams.timestamp,
     },
+  }
+
+  if (/([#])/.exec(subscriptionParams.sort)) {
+    query.hashtags =  subscriptionParams.sort;
+  }
+
+  return Posts.find(query, {
+    sort: {
+      createdAt: -1,
+    }
   });
 
 });
