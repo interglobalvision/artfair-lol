@@ -15,8 +15,25 @@ export const addComment = new ValidatedMethod({
 
   run({postId, comment}) {
 
-    let commentSantized = sanitizeHtml(comment);
+    const commentSantized = sanitizeHtml(comment);
+    const hashtagsArray = commentSantized.match(/#\S+/g);
 
-    Posts.update({_id: postId}, { $push: { comments: commentSantized } } );
+    let insert = {
+      $push: {
+        comments: commentSantized
+      }
+    };
+
+    if (hashtagsArray) {
+      const post = Posts.findOne(postId);
+
+      let hashtags = _.union(post.hashtags, hashtagsArray)
+
+      insert.$set = {
+        hashtags
+      };
+    }
+
+    Posts.update({_id: postId}, insert);
   }
 });
