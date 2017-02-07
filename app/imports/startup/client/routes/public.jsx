@@ -9,6 +9,10 @@ import { mount } from 'react-mounter';
 import { MainContainer } from '/imports/containers/MainContainer.jsx';
 import { FeedContainer } from '/imports/containers/FeedContainer.jsx';
 
+const scrollToTop = () => {
+  $('html, body').stop().animate({ scrollTop: 0 }, 300);
+};
+
 // Public Routes
 const publicRoutes = FlowRouter.group({
   name: 'public',
@@ -16,6 +20,7 @@ const publicRoutes = FlowRouter.group({
 
 publicRoutes.route('/', {
   name: 'home',
+  triggersEnter: [scrollToTop],
   action() {
     mount(MainContainer, {
       //content: <UserLogin />,
@@ -38,6 +43,7 @@ publicRoutes.route('/logout', {
 
 publicRoutes.route('/not-found', {
   name: 'not-found',
+  triggersEnter: [scrollToTop],
   action() {
     mount(MainContainer, {
       content: <Page404 />,
@@ -48,6 +54,7 @@ publicRoutes.route('/not-found', {
 
 publicRoutes.route('/unauthorized', {
   name: 'unauthorized',
+  triggersEnter: [scrollToTop],
   action() {
     mount(MainContainer, {
       content: <Page401 />,

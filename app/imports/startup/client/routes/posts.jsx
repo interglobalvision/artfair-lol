@@ -8,6 +8,10 @@ import { FeedContainer } from '/imports/containers/FeedContainer.jsx';
 
 import { NewPost } from '/imports/components/posts/NewPost.jsx';
 
+const scrollToTop = () => {
+  $('html, body').stop().animate({ scrollTop: 0 }, 300);
+};
+
 // Post Routes
 const postsRoutes = FlowRouter.group({
   name: 'posts',
@@ -15,9 +19,8 @@ const postsRoutes = FlowRouter.group({
 
 postsRoutes.route('/new', {
   name: 'newPost',
+  triggersEnter: [scrollToTop],
   action() {
-    Session.set('feedState', 'New')
-
     mount(MainContainer, {
       content: <NewPost />,
       headerLeftLabel: 'New',
@@ -43,6 +46,16 @@ postsRoutes.route('/post/:id', {
       //content: <UserLogin />,
       content: <PostContainer postId={params.id} />,
       headerLeftLabel: 'Post',
+    });
+  },
+});
+
+postsRoutes.route('/post/:id/:scroll', {
+  name: 'singlePostScroll',
+  action(params) {
+    mount(MainContainer, {
+      //content: <UserLogin />,
+      content: <PostContainer postId={params.id} scrollTo={params.scroll} />,
     });
   },
 });
