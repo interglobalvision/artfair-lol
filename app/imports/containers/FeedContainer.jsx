@@ -25,12 +25,14 @@ function getTrackerLoader(reactiveMapper) {
 
 function reactiveMapper(props, onData) {
 
+  // Set feedTimestamp, used to differentiate new posts when added
   if (!Session.get('feedTimestamp')) {
     Session.set('feedTimestamp', new Date());
   }
 
+
   let subscriptionParams = {
-    sort: 'new',
+    sort: 'new', // NOT BEIGN USED JUST YET
     timestamp: Session.get('feedTimestamp'),
   };
 
@@ -38,8 +40,10 @@ function reactiveMapper(props, onData) {
     timestamp: Session.get('feedTimestamp'),
   };
 
-  if (Meteor.subscribe('feed.posts', subscriptionParams).ready() && Meteor.subscribe('feed.newPosts', subscriptionNewPostsParams).ready()) {
-    console.log('retriggering feed sub');
+  if (
+    Meteor.subscribe('feed.posts', subscriptionParams).ready() && // Subscription for feed posts
+    Meteor.subscribe('feed.newPosts', subscriptionNewPostsParams).ready() // Subscription for new posts
+  ) {
 
     const posts = Posts.find({
       createdAt: {

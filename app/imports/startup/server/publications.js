@@ -6,6 +6,7 @@ Meteor.publish('feed.posts', function(subscriptionParams) {
 
   check(subscriptionParams, Object);
   check(subscriptionParams.sort, String);
+  check(subscriptionParams.timestamp, Date);
 
   return Posts.find({
     createdAt: {
@@ -23,6 +24,7 @@ Meteor.publish('feed.posts', function(subscriptionParams) {
 Meteor.publish('feed.newPosts', function(subscriptionParams) {
 
   check(subscriptionParams, Object);
+  check(subscriptionParams.timestamp, Date);
 
   return Posts.find({
     createdAt: {
