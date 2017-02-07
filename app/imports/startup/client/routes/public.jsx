@@ -25,6 +25,7 @@ publicRoutes.route('/', {
     mount(MainContainer, {
       //content: <UserLogin />,
       content: <FeedContainer />,
+      headerLeftLabel: 'New',
     });
   },
 });
@@ -46,6 +47,7 @@ publicRoutes.route('/not-found', {
   action() {
     mount(MainContainer, {
       content: <Page404 />,
+      headerLeftLabel: '404',
     });
   },
 });
@@ -56,6 +58,7 @@ publicRoutes.route('/unauthorized', {
   action() {
     mount(MainContainer, {
       content: <Page401 />,
+      headerLeftLabel: '501',
     });
   },
 });
