@@ -11,6 +11,7 @@ import '/imports/startup/server/accounts.js';
 import '/imports/api/photosMethods.js';
 import '/imports/api/commentsMethods.js';
 import '/imports/api/votesMethods.js';
+import '/imports/api/adminMethods.js';
 
 Meteor.startup(() => {
   // code to run on server at startup
