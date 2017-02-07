@@ -9,6 +9,7 @@
     "fingerprintjs2": "^1.4.1",
     "meteor-node-stubs": "~0.2.0",
     "react": "^15.4.2",
+    "react-cookie": "^1.0.4",
     "react-dom": "^15.4.2",
     "react-komposer": "^2.0.0",
     "react-mounter": "^1.2.0",
