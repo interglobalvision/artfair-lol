@@ -24,7 +24,7 @@ export class NewPost extends Component {
       locationChecking: true
     };
 
-    this.handleGeolocation = this.handleGeolocation.bind(this);
+    this.checkGeofence = this.checkGeofence.bind(this);
 
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -33,22 +33,13 @@ export class NewPost extends Component {
 
   componentWillMount() {
 
-    if (!Session.get('geolocation')) {
-      navigator.geolocation.getCurrentPosition(this.handleGeolocation);
-    }
+    navigator.geolocation.getCurrentPosition(this.checkGeofence);
 
   }
 
-  handleGeolocation(position) {
-    Session.set('geolocationLatitude', position.coords.latitude);
-    Session.set('geolocationLongitude', position.coords.longitude);
-
-    this.checkGeofence();
-  }
-
-  checkGeofence() {
-    let latitude = Session.get('geolocationLatitude');
-    let longitude = Session.get('geolocationLongitude');
+  checkGeofence(position) {
+    let latitude = position.coords.latitude;
+    let longitude = position.coords.longitude;
 
     let fenceMatch = _.find(Meteor.settings.public.geofences, function(fence) {
       let distance = distanceFrom({
