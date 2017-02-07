@@ -49,7 +49,7 @@ export class Actions extends Component {
             <div className='grid-item item-s-3 font-size-large font-bold num-votes'>{this.numVotes()}</div>
             <div className='grid-item item-s-3'><img className='icon' src='/icons/thumb_up.svg' onClick={this.onVote} data-vote='up' data-voted={this.getUpvoted()} /></div>
             <div className='grid-item item-s-3 margin-top-micro'><img className='icon' src='/icons/thumb_down.svg' onClick={this.onVote} data-vote='down' data-voted={this.getDownvoted()} /></div>
-            <div className='grid-item item-s-3 margin-top-micro'><a href={'/post/' + this.props.postId + '/new-comment'}><img className='icon' src='/icons/comment.svg' /></a></div>
+            <div className='grid-item item-s-3 margin-top-micro'><a href={FlowRouter.path('singlePostScroll', { id: this.props.postId, scroll: 'new-comment'})}><img className='icon' src='/icons/comment.svg' /></a></div>
           </div>
         </div>
       </div>

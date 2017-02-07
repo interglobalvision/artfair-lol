@@ -26,8 +26,18 @@ postsRoutes.route('/new', {
   },
 });
 
-postsRoutes.route('/post/:id/:scroll', {
+postsRoutes.route('/post/:id', {
   name: 'singlePost',
+  action(params) {
+    mount(MainContainer, {
+      //content: <UserLogin />,
+      content: <PostContainer postId={params.id} />,
+    });
+  },
+});
+
+postsRoutes.route('/post/:id/:scroll', {
+  name: 'singlePostScroll',
   action(params) {
     mount(MainContainer, {
       //content: <UserLogin />,
