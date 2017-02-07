@@ -8,6 +8,7 @@ import { mount } from 'react-mounter';
 
 import { MainContainer } from '/imports/containers/MainContainer.jsx';
 import { FeedContainer } from '/imports/containers/FeedContainer.jsx';
+import { UserLogin } from '/imports/components/user/UserLogin.jsx';
 
 // Public Routes
 const publicRoutes = FlowRouter.group({
@@ -24,16 +25,28 @@ publicRoutes.route('/', {
   },
 });
 
-/*
+publicRoutes.route('/login', {
+  name: 'login',
+  action() {
+
+    if (Roles.userIsInRole(Meteor.userId(), 'admin')) {
+      return FlowRouter.go('/admin');
+    }
+
+    mount(MainContainer, {
+      content: <UserLogin />,
+    });
+  },
+});
+
 publicRoutes.route('/logout', {
   name: 'logout',
   action() {
     Meteor.logout(() => {
-      FlowRouter.go('/');
+      FlowRouter.go('/login');
     });
   },
 });
-*/
 
 publicRoutes.route('/not-found', {
   name: 'not-found',
