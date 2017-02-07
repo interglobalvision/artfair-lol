@@ -22,15 +22,24 @@ export const addPost = new ValidatedMethod({
 
   run({photo, fingerprint, location, caption}) {
 
-    let captionSantized = sanitizeHtml(caption);
+    let hashtagsArray = [];
+
+    if (caption !== undefined) {
+
+      // Sanitize caption
+      caption = sanitizeHtml(caption);
+
+      // Parse hastags
+      hashtagsArray = caption.match(/#\S+/g);
+    }
+
     let emptyVotes = [];
-    let hashtagsArray = captionSantized.match(/#\S+/g);
 
     let data = {
       photo,
       fingerprint,
       location,
-      caption: captionSantized,
+      caption,
       upVotes: emptyVotes,
       downVotes: emptyVotes,
     }
