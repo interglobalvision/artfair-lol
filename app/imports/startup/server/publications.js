@@ -8,6 +8,8 @@ Meteor.publish('feed.posts', function(subscriptionParams) {
   check(subscriptionParams.sort, String);
   check(subscriptionParams.timestamp, Date);
 
+  let limit = (subscriptionParams.pagination * Meteor.settings.public.postsPerPage) + 1;
+
   let query = {
     createdAt: {
       $lte: subscriptionParams.timestamp,
@@ -22,7 +24,7 @@ Meteor.publish('feed.posts', function(subscriptionParams) {
     sort: {
       createdAt: -1,
     },
-    limit: 10,
+    limit,
   });
 
 });
