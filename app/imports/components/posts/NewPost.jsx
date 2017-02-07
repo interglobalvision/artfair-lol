@@ -179,17 +179,17 @@ export class NewPost extends Component {
 
   render() {
     return (
-      <section>
+      <section className="padding-bottom-small">
         <LocationNotice checking={this.state.locationChecking} approved={this.state.locationApproved} location={this.state.location} />
 
-        <div className="grid-row margin-bottom-small">
+        <div className="grid-row padding-bottom-small">
           <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
             <img className="post-image" src={this.state.photo} />
           </div>
         </div>
         <form onSubmit={this.onSubmitForm}>
           <textarea className="comment-textarea margin-bottom-small" placeholder="Add a caption" value={this.state.caption} onChange={this.onInputChange} />
-          <div className="grid-row margin-bottom-basic">
+          <div className="grid-row">
             <div className="grid-item item-s-12 text-align-center">
               <input className='button font-size-mid' type="submit" value="POST" disabled={this.disableElem()} />
             </div>

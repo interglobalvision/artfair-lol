@@ -18,7 +18,7 @@ export class SinglePost extends Component {
 
   render() {
     return (
-      <div className='post-feed padding-bottom-mid'>
+      <div className='post-feed padding-bottom-small'>
 
         <PostPhoto photo={this.props.post.photo} />
 

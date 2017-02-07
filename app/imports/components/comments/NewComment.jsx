@@ -44,7 +44,7 @@ export class NewComment extends Component {
     return (
       <form id="new-comment" onSubmit={this.onSubmitForm}>
         <textarea className="comment-textarea margin-bottom-small" placeholder="Add a comment" value={this.state.comment} onChange={this.onInputChange} />
-        <div className="grid-row margin-bottom-basic">
+        <div className="grid-row">
           <div className="grid-item item-s-12 text-align-center">
             <input className="button font-size-mid" type="submit" value="COMMENT" />
           </div>
