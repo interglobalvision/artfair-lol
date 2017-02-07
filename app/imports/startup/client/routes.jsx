@@ -4,6 +4,7 @@ import { mount } from 'react-mounter';
 
 import '/imports/startup/client/routes/public.jsx';
 import '/imports/startup/client/routes/posts.jsx';
+import '/imports/startup/client/routes/admin.jsx';
 
 // Other Routes stuff
 FlowRouter.wait();
