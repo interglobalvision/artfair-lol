@@ -10,7 +10,7 @@ import { TimeAgo } from '/imports/components/posts/TimeAgo.jsx';
 export class AdminPost extends Component {
   render() {
     return (
-      <div className='grid-item item-s-6 item-m-4 post-feed padding-bottom-mid'>
+      <div className='grid-item item-s-6 item-m-4 post-admin padding-bottom-mid'>
 
         <PostPhoto photo={this.props.post.photo} />
 
