@@ -32,8 +32,10 @@ export class FeedLayout extends Component {
   handleScroll(event) {
     if (document.body.scrollTop + window.innerHeight === document.getElementById('main-container').clientHeight) {
       if(this.props.morePosts) {
-        let pagination = Session.get('pagination') || 1;
-        Session.set('pagination', pagination + 1);
+        setTimeout( () => {
+          let pagination = Session.get('pagination') || 1;
+          Session.set('pagination', pagination + 1);
+        }, 600);
       } else {
         this.unbindScroll();
       }
