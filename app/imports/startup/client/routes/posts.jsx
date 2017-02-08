@@ -21,6 +21,10 @@ postsRoutes.route('/new', {
   name: 'newPost',
   triggersEnter: [scrollToTop],
   action() {
+    if (!Session.get('newPhoto')) {
+      return FlowRouter.go('/');
+    }
+
     mount(MainContainer, {
       content: <NewPost />,
       headerNavRoute: '/',
