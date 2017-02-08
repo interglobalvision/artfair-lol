@@ -19,7 +19,7 @@ export class FeedPost extends Component {
 
         <Comments comments={this.props.post.comments} limitComments={true} postId={this.props.post._id} />
 
-        <TimeAgo createdAt={this.props.post.createdAt} />
+        <TimeAgo createdAt={this.props.post.createdAt} postId={this.props.post._id} />
 
       </div>
     );

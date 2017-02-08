@@ -18,7 +18,7 @@ export class SinglePost extends Component {
 
   render() {
     return (
-      <div className='post-feed padding-bottom-mid'>
+      <div className='post-feed padding-bottom-small'>
 
         <PostPhoto photo={this.props.post.photo} />
 
@@ -26,7 +26,7 @@ export class SinglePost extends Component {
 
         <Caption caption={this.props.post.caption} />
 
-        <TimeAgo createdAt={this.props.post.createdAt} />
+        <TimeAgo createdAt={this.props.post.createdAt} postId={this.props.post._id} />
 
         <Comments comments={this.props.post.comments} limitComments={false} postId={this.props.post._id} />
 
