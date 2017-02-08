@@ -56,6 +56,7 @@ export class NewPost extends Component {
     let imageWidth = event.target.width;
     let imageHeight = event.target.height;
 
+    // If image is larger than maxWidth
     if (imageWidth > Meteor.settings.public.imageCompression.maxWidth) {
       let ratio = Meteor.settings.public.imageCompression.maxWidth / imageWidth;
 
@@ -69,6 +70,11 @@ export class NewPost extends Component {
         quality: Meteor.settings.public.imageCompression.quality,
         speed: Meteor.settings.public.imageCompression.speed,
       }, this.imageResizedCallback);
+    } else {
+      this.setState({
+        imageReady: true,
+        imageCompressed: this.state.photo,
+      });
     }
   }
 
