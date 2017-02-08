@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { PostPhoto } from '/imports/components/posts/PostPhoto.jsx';
 import { Actions } from '/imports/components/posts/Actions.jsx';
 import { Caption } from '/imports/components/posts/Caption.jsx';
-import { TimeAgo } from '/imports/components/posts/TimeAgo.jsx';
+import { TimeLocation } from '/imports/components/posts/TimeLocation.jsx';
 import { Comments } from '/imports/components/comments/Comments.jsx';
 import { NewComment } from '/imports/components/comments/NewComment.jsx';
 
@@ -26,7 +26,7 @@ export class SinglePost extends Component {
 
         <Caption caption={this.props.post.caption} />
 
-        <TimeAgo createdAt={this.props.post.createdAt} postId={this.props.post._id} />
+        <TimeLocation createdAt={this.props.post.createdAt} postId={this.props.post._id} location={this.props.post.location} />
 
         <Comments comments={this.props.post.comments} limitComments={false} postId={this.props.post._id} />
 

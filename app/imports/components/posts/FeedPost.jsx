@@ -4,7 +4,7 @@ import { PostPhoto } from '/imports/components/posts/PostPhoto.jsx';
 import { Actions } from '/imports/components/posts/Actions.jsx';
 import { Caption } from '/imports/components/posts/Caption.jsx';
 import { Comments } from '/imports/components/comments/Comments.jsx';
-import { TimeAgo } from '/imports/components/posts/TimeAgo.jsx';
+import { TimeLocation } from '/imports/components/posts/TimeLocation.jsx';
 
 export class FeedPost extends Component {
   render() {
@@ -19,7 +19,7 @@ export class FeedPost extends Component {
 
         <Comments comments={this.props.post.comments} limitComments={true} postId={this.props.post._id} />
 
-        <TimeAgo createdAt={this.props.post.createdAt} postId={this.props.post._id} />
+        <TimeLocation createdAt={this.props.post.createdAt} postId={this.props.post._id} location={this.props.post.location} />
 
       </div>
     );
