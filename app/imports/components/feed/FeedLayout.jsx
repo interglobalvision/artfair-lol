@@ -47,7 +47,7 @@ export class FeedLayout extends Component {
 
     if (this.props.posts) {
       return (
-        <section id='feed'>
+        <section id='feed' className='container'>
           {this.props.notifyNewPosts &&
             <NewPostsNotice newPosts={this.props.newPosts} />
           }
@@ -66,7 +66,7 @@ export class FeedLayout extends Component {
       )
     } else {
       return (
-        <section id='feed'>
+        <section id='feed' className='container'>
           <div className='feed-posts'>
             <h1>Nothing yet! Post some</h1>
           </div>
