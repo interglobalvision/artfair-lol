@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import Hermite from '/imports/lib/hermite.js';
 import { distanceFrom } from '/imports/lib/geometry.js';
 
 import sanitizeHtml from 'sanitize-html';
@@ -24,6 +25,7 @@ export class NewPost extends Component {
       fingerprint,
       locationApproved: false,
       locationChecking: true,
+      imageReady: false,
       uploading: false
     };
 
@@ -32,11 +34,50 @@ export class NewPost extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
+    this.imageOnLoad = this.imageOnLoad.bind(this);
   }
 
   componentWillMount() {
-
     navigator.geolocation.getCurrentPosition(this.checkGeofence);
+  }
+
+  imageOnLoad(event) {
+    let img = new Image;
+    img.onload = this.resizeImage.bind(this);
+    img.src = this.state.photo;
+  }
+
+  resizeImage(event) {
+    let imageWidth = event.target.width;
+    let imageHeight = event.target.height;
+
+    let canvas = this.canvas;
+    let ctx = canvas.getContext('2d');
+
+    canvas.width = imageWidth;
+    canvas.height = imageHeight;
+
+    ctx.drawImage(event.target, 0, 0);
+
+    if (imageWidth > Meteor.settings.public.maxImageWidth) {
+      let ratio = Meteor.settings.public.maxImageWidth / imageWidth;
+      let hermite = new Hermite();
+
+      hermite.resample(canvas, imageWidth * ratio, imageHeight * ratio, true, this.imageResizedCallback.bind(this));
+
+    } else {
+      this.setState({
+        'imageReady': true
+      });
+    }
+
+  }
+
+  imageResizedCallback() {
+
+    this.setState({
+      'imageReady': true
+    });
 
   }
 
@@ -82,7 +123,7 @@ export class NewPost extends Component {
   }
 
   uploadFile() {
-    uploader = this.getSlingshotUploader();
+    const uploader = this.getSlingshotUploader();
     const photo = this.state.photo;
 
     this.setState({
@@ -112,11 +153,11 @@ export class NewPost extends Component {
     }, 100);
 
     // Use fetch to convert base64 to blob
-    fetch(photo)
-      .then( res => res.blob() )
-      .then( blob => {
-        uploader.send(blob, this.handleUpload);
-      });
+    let canvas = this.canvas;
+
+    canvas.toBlob( blob => {
+      uploader.send(blob, this.handleUpload);
+    });
   }
 
   handleUpload(error, url) {
@@ -156,7 +197,7 @@ export class NewPost extends Component {
   }
 
   disableElem() {
-    if (this.state.locationChecking || !this.state.locationApproved || this.state.uploading) {
+    if (this.state.locationChecking || !this.state.locationApproved || this.state.uploading || !this.state.imageReady) {
       return true;
     }
 
@@ -184,7 +225,8 @@ export class NewPost extends Component {
 
         <div className="grid-row padding-bottom-small">
           <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
-            <img className="post-image" src={this.state.photo} />
+            <img className="post-image" src={this.state.photo} onLoad={this.imageOnLoad} />
+            <canvas id="image-canvas" style={{display: "none"}} ref={canvas => this.canvas = canvas}></canvas>
           </div>
         </div>
         <form onSubmit={this.onSubmitForm}>
