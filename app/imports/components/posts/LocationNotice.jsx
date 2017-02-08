@@ -4,7 +4,7 @@ export const LocationNotice = ({checking, approved, location}) => {
   return (
     <div className="grid-row padding-top-small padding-bottom-small justify-center">
     {checking &&
-        <span id="location-notice-finding"><img className='location-icon icon-small' src='/icons/location_searching.svg' />Finding your location...</span>
+        <span class="animation-phase"><img className='location-icon icon-small' src='/icons/location_searching.svg' />Finding your location...</span>
     }
     {!checking && approved &&
         <span><img className='location-icon icon-small' src='/icons/location_on.svg' />{location}</span>
