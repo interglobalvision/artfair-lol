@@ -8,10 +8,7 @@ import { MainLayout } from '/imports/components/base/MainLayout.jsx';
 const composer = (props, onData) => {
 
   var client = new ClientJS();
-
   var fingerprint = client.getFingerprint();
-
-  console.log('fingerprint', fingerprint);
 
   Session.set('fingerprint', fingerprint);
   onData(null, {});
