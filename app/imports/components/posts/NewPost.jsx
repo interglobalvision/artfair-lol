@@ -129,7 +129,8 @@ export class NewPost extends Component {
 
   uploadFile() {
     const uploader = this.getSlingshotUploader();
-    const image = this.state.imageCompressed;
+    const imageBlob = this.dataURLtoBlob(this.state.imageCompressed, 'photo');
+    let progress = 0;
 
     this.setState({
       'uploading': true,
@@ -137,8 +138,6 @@ export class NewPost extends Component {
         width: '0%',
       }
     });
-
-    let progress = 0;
 
     this.timer = setInterval(() => {
       if(!isNaN(uploader.progress())) {
@@ -157,16 +156,19 @@ export class NewPost extends Component {
       }
     }, 100);
 
-    let img = this.dataURLtoFile(image, 'photo');
-    uploader.send(img, this.handleUpload);
+    uploader.send(imageBlob, this.handleUpload);
   }
 
-  dataURLtoFile(dataurl, filename) {
+  dataURLtoBlob(dataurl, filename) {
+    // from https://stackoverflow.com/questions/28041840/convert-dataurl-to-file-using-javascript
+
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
       bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while(n--){
+
+    while(n--) {
       u8arr[n] = bstr.charCodeAt(n);
     }
+
     return new Blob([u8arr], {type:mime});
   }
 
