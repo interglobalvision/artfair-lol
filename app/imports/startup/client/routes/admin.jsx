@@ -21,6 +21,7 @@ adminRoutes.route('/admin', {
     } else {
       mount(MainContainer, {
         content: <AdminContainer />,
+        headerLeftLabel: 'Bossmode',
       });
     }
   },

@@ -17,7 +17,7 @@ export class AdminActions extends Component {
 
   render() {
     return (
-      <div className='grid-row margin-bottom-small'>
+      <div className='grid-row margin-top-tiny margin-bottom-tiny'>
         <div className='grid-item item-s-12'>
           <div className='grid-row align-items-center line-height-tighter border-bottom-grey padding-bottom-tiny text-align-center'>
             <div className='grid-item font-bold num-votes'><button className="button button-small" onClick={this.onRemove}>Remove</button></div>

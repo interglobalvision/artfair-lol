@@ -66,3 +66,18 @@ Meteor.publish('post.single', function(postId) {
   return Posts.find(postId);
 
 });
+
+Meteor.publish('admin.posts', function(subscriptionParams) {
+
+  check(subscriptionParams.pagination, Number);
+
+  let limit = (subscriptionParams.pagination * Meteor.settings.public.postsPerPage) + 1;
+
+  return Posts.find({}, {
+    sort: {
+      createdAt: -1,
+    },
+    limit,
+  });
+
+});

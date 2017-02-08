@@ -25,9 +25,11 @@ export const Comments = ({comments, limitComments, postId}) => {
   return (
     <div className='grid-row post-comments'>
       <div className='grid-item item-s-12'>
-        <div className='padding-bottom-tiny font-color-grey'>
-          {moreComments}
-        </div>
+        {moreComments &&
+          <div className='padding-bottom-tiny font-color-grey'>
+            {moreComments}
+          </div>
+        }
         <ul>
           {commentsRows}
         </ul>
