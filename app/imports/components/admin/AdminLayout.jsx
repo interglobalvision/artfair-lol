@@ -26,7 +26,7 @@ export class AdminLayout extends Component {
 
           {this.props.morePosts &&
             <div className='admin-posts grid-row'>
-              <div className='grid-item item-s-12' onClick={this.morePosts}>
+              <div className='grid-item item-s-12 text-align-center u-pointer padding-top-small padding-bottom-small' onClick={this.morePosts}>
                 More Posts
               </div>
             </div>
