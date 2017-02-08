@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 
-import Hermite from '/imports/lib/hermite.js';
+import 'image-compressor';
+import '/imports/lib/Blob.js';
+
 import { distanceFrom } from '/imports/lib/geometry.js';
 
 import sanitizeHtml from 'sanitize-html';
@@ -35,27 +37,9 @@ export class NewPost extends Component {
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
     this.imageOnLoad = this.imageOnLoad.bind(this);
+    this.resizeImage = this.resizeImage.bind(this);
+    this.imageResizedCallback = this.imageResizedCallback.bind(this);
 
-    this.toBlobPolyfill();
-  }
-
-  toBlobPolyfill() {
-    if (!HTMLCanvasElement.prototype.toBlob) {
-      Object.defineProperty(HTMLCanvasElement.prototype, 'toBlob', {
-        value: function (callback, type, quality) {
-
-          var binStr = atob( this.toDataURL(type, quality).split(',')[1] ),
-            len = binStr.length,
-            arr = new Uint8Array(len);
-
-          for (var i = 0; i < len; i++ ) {
-            arr[i] = binStr.charCodeAt(i);
-          }
-
-          callback( new Blob( [arr], {type: type || 'image/png'} ) );
-        }
-      });
-    }
   }
 
   componentWillMount() {
@@ -63,41 +47,41 @@ export class NewPost extends Component {
   }
 
   imageOnLoad(event) {
-    let img = new Image;
-    img.onload = this.resizeImage.bind(this);
-    img.src = this.state.photo;
+    let phantomImage = new Image();
+    phantomImage.onload = this.resizeImage;
+    phantomImage.src = event.target.src;
   }
 
   resizeImage(event) {
     let imageWidth = event.target.width;
     let imageHeight = event.target.height;
 
-    let canvas = this.canvas;
-    let ctx = canvas.getContext('2d');
+    // If image is larger than maxWidth
+    if (imageWidth > Meteor.settings.public.imageCompression.maxWidth) {
+      let ratio = Meteor.settings.public.imageCompression.maxWidth / imageWidth;
 
-    canvas.width = imageWidth;
-    canvas.height = imageHeight;
+      let imageCompressor = new ImageCompressor;
 
-    ctx.drawImage(event.target, 0, 0);
-
-    if (imageWidth > Meteor.settings.public.maxImageWidth) {
-      let ratio = Meteor.settings.public.maxImageWidth / imageWidth;
-      let hermite = new Hermite();
-
-      hermite.resample(canvas, imageWidth * ratio, imageHeight * ratio, true, this.imageResizedCallback.bind(this));
-
+      imageCompressor.run(this.state.photo, {
+        toWidth: imageWidth * ratio,
+        toHeight: imageHeight * ratio,
+        mimeType:  Meteor.settings.public.imageCompression.mimeType,
+        mode: Meteor.settings.public.imageCompression.mode,
+        quality: Meteor.settings.public.imageCompression.quality,
+        speed: Meteor.settings.public.imageCompression.speed,
+      }, this.imageResizedCallback);
     } else {
       this.setState({
-        'imageReady': true
+        imageReady: true,
+        imageCompressed: this.state.photo,
       });
     }
-
   }
 
-  imageResizedCallback() {
-
+  imageResizedCallback(img) {
     this.setState({
-      'imageReady': true
+      imageReady: true,
+      imageCompressed: img,
     });
 
   }
@@ -108,10 +92,10 @@ export class NewPost extends Component {
 
     let fenceMatch = _.find(Meteor.settings.public.geofences, function(fence) {
       let distance = distanceFrom({
-        'lat1': latitude,
-        'lng1': longitude,
-        'lat2': fence.latitude,
-        'lng2': fence.longitude
+        lat1: latitude,
+        lng1: longitude,
+        lat2: fence.latitude,
+        lng2: fence.longitude
       });
 
       if (distance <= (fence.radius / 1000)) {
@@ -145,7 +129,8 @@ export class NewPost extends Component {
 
   uploadFile() {
     const uploader = this.getSlingshotUploader();
-    const photo = this.state.photo;
+    const imageBlob = this.dataURLtoBlob(this.state.imageCompressed, 'photo');
+    let progress = 0;
 
     this.setState({
       'uploading': true,
@@ -153,8 +138,6 @@ export class NewPost extends Component {
         width: '0%',
       }
     });
-
-    let progress = 0;
 
     this.timer = setInterval(() => {
       if(!isNaN(uploader.progress())) {
@@ -173,12 +156,20 @@ export class NewPost extends Component {
       }
     }, 100);
 
-    // Use fetch to convert base64 to blob
-    let canvas = this.canvas;
+    uploader.send(imageBlob, this.handleUpload);
+  }
 
-    canvas.toBlob( blob => {
-      uploader.send(blob, this.handleUpload);
-    });
+  dataURLtoBlob(dataurl, filename) {
+    // from https://stackoverflow.com/questions/28041840/convert-dataurl-to-file-using-javascript
+
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+
+    while(n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new Blob([u8arr], {type:mime});
   }
 
   handleUpload(error, url) {
@@ -187,7 +178,6 @@ export class NewPost extends Component {
     const location = this.state.location;
 
     if (error) {
-      console.log(error);
       throw new Meteor.Error('upload-file-fail', error);
 
     } else {
@@ -247,7 +237,6 @@ export class NewPost extends Component {
         <div className="grid-row padding-bottom-small">
           <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
             <img className="post-image" src={this.state.photo} onLoad={this.imageOnLoad} />
-            <canvas id="image-canvas" style={{display: "none"}} ref={canvas => this.canvas = canvas}></canvas>
           </div>
         </div>
         <form onSubmit={this.onSubmitForm}>
