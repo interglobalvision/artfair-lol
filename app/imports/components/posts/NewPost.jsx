@@ -72,7 +72,6 @@ export class NewPost extends Component {
   }
 
   imageResizedCallback(img) {
-    console.log('imageready');
     this.setState({
       imageReady: true,
       imageCompressed: img,
