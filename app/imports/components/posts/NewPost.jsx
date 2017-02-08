@@ -25,6 +25,7 @@ export class NewPost extends Component {
       fingerprint,
       locationApproved: false,
       locationChecking: true,
+      imageReady: false,
       uploading: false
     };
 
@@ -60,13 +61,23 @@ export class NewPost extends Component {
 
     if (imageWidth > Meteor.settings.public.maxImageWidth) {
       let ratio = Meteor.settings.public.maxImageWidth / imageWidth;
-
       let hermite = new Hermite();
 
-      hermite.resample(canvas, imageWidth * ratio, imageHeight * ratio, true, function() {
-        console.log('ok');
+      hermite.resample(canvas, imageWidth * ratio, imageHeight * ratio, true, this.imageResizedCallback.bind(this));
+
+    } else {
+      this.setState({
+        'imageReady': true
       });
     }
+
+  }
+
+  imageResizedCallback() {
+
+    this.setState({
+      'imageReady': true
+    });
 
   }
 
@@ -186,7 +197,7 @@ export class NewPost extends Component {
   }
 
   disableElem() {
-    if (this.state.locationChecking || !this.state.locationApproved || this.state.uploading) {
+    if (this.state.locationChecking || !this.state.locationApproved || this.state.uploading || !this.state.imageReady) {
       return true;
     }
 
