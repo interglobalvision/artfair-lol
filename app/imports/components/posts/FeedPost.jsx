@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { PostPhoto } from '/imports/components/posts/PostPhoto.jsx';
 import { Actions } from '/imports/components/posts/Actions.jsx';
+import { PostLocation } from '/imports/components/posts/PostLocation.jsx';
 import { Caption } from '/imports/components/posts/Caption.jsx';
 import { Comments } from '/imports/components/comments/Comments.jsx';
 import { TimeAgo } from '/imports/components/posts/TimeAgo.jsx';
@@ -14,6 +15,8 @@ export class FeedPost extends Component {
         <PostPhoto photo={this.props.post.photo} />
 
         <Actions upVotes={this.props.post.upVotes} downVotes={this.props.post.downVotes} postId={this.props.post._id} />
+
+        <PostLocation location={this.props.post.location} />
 
         <Caption caption={this.props.post.caption} />
 
