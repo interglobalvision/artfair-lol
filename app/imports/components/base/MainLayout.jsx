@@ -16,8 +16,10 @@ export class MainLayout extends Component {
     cookie.save('hasVisited', true, { path: '/' });
   }
 
-  componentDidMount() {
-    this.setState({hasVisited: cookie.load('hasVisited')});
+  componentWillUpdate() {
+    if (!this.state.hasVisited) {
+      this.setState({hasVisited: cookie.load('hasVisited')});
+    }
   }
 
   render() {
