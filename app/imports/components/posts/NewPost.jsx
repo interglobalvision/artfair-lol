@@ -320,6 +320,11 @@ export class NewPost extends Component {
             </div>
           </div>
         </form>
+        {this.state.processingPhoto &&
+          <div id="upload-progress-holder" className="grid-row justify-center align-items-center">
+            <div className="grid-item item-s-12 no-gutter text-align-center font-bold animation-phase">Processing...</div>
+          </div>
+        }
         {this.state.uploading &&
           <div id="upload-progress-holder" className="grid-row justify-center align-items-center">
             <div id="upload-progress-bar" style={this.state.progressBarStyle}></div>
