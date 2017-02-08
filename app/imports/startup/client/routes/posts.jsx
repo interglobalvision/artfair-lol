@@ -28,6 +28,7 @@ postsRoutes.route('/new', {
     mount(MainContainer, {
       content: <NewPost />,
       headerNavRoute: '/',
+      hideHeaderCamera: true,
     });
   },
 });

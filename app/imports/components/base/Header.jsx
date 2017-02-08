@@ -26,12 +26,14 @@ export const Header = (props) => (
           <a href='/'><img id='app-logo' src='/icons/artfair-lol-logo.svg' className='icon' /></a>
           <h1 className='u-visuallyhidden'>Artfair.lol</h1>
         </div>
+        {!props.hideCamera &&
         <div className='grid-item item-s-2 item-m-3'>
           <PhotoInput />
           <label id="add-photo-label" htmlFor="add-photo-input">
             <img src="/icons/add_a_photo.svg" className="icon" />
           </label>
         </div>
+        }
       </nav>
     </div>
   </header>
