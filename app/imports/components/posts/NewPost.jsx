@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import 'image-compressor';
+import 'whatwg-fetch';
 
 import { distanceFrom } from '/imports/lib/geometry.js';
 
