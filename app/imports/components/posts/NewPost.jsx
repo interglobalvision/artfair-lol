@@ -15,15 +15,11 @@ export class NewPost extends Component {
   constructor(props) {
     super(props);
 
-    let photo = Session.get('newPhoto');
     let fingerprint = Session.get('fingerprint');
-
-    if(photo === undefined) {
-      FlowRouter.go('home');
-    }
+    let photo = Session.get('newPhoto');
 
     this.state = {
-      photo: photo.image,
+      processingPhoto: true,
       exif: photo.exif,
       fingerprint,
       locationApproved: false,
@@ -37,7 +33,8 @@ export class NewPost extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
-    this.imageOnLoad = this.imageOnLoad.bind(this);
+    this.startProcessing = this.startProcessing.bind(this);
+    this.processPhoto = this.processPhoto.bind(this);
     this.resizeImage = this.resizeImage.bind(this);
     this.imageResizedCallback = this.imageResizedCallback.bind(this);
 
@@ -45,45 +42,29 @@ export class NewPost extends Component {
 
   componentWillMount() {
     navigator.geolocation.getCurrentPosition(this.checkGeofence);
+    this.startProcessing();
   }
 
-  imageOnLoad(event) {
-    if(!this.state.fixedOrientation) {
-      this.phantomImage = new Image();
-      this.phantomImage.onload = this.resizeImage;
-      this.phantomImage.src = event.target.src;
+  startProcessing() {
+    let photo = Session.get('newPhoto');
+
+    if(photo.image === undefined) {
+      FlowRouter.go('home');
     }
+
+    this.phantomImage = new Image();
+    this.phantomImage.onload = this.processPhoto;
+    this.phantomImage.src =  photo.image;
   }
 
-  resizeImage(event) {
-    let imageWidth = event.target.width;
-    let imageHeight = event.target.height;
-
-    this.resetOrientation(imageWidth, imageHeight);
-
-    // If image is larger than maxWidth
-    if (imageWidth > Meteor.settings.public.imageCompression.maxWidth) {
-      let ratio = Meteor.settings.public.imageCompression.maxWidth / imageWidth;
-
-      let imageCompressor = new ImageCompressor;
-
-      imageCompressor.run(this.state.photo, {
-        toWidth: imageWidth * ratio,
-        toHeight: imageHeight * ratio,
-        mimeType:  Meteor.settings.public.imageCompression.mimeType,
-        mode: Meteor.settings.public.imageCompression.mode,
-        quality: Meteor.settings.public.imageCompression.quality,
-        speed: Meteor.settings.public.imageCompression.speed,
-      }, this.imageResizedCallback);
-    } else {
-      this.setState({
-        imageReady: true,
-        imageCompressed: this.state.photo,
-      });
-    }
+  processPhoto() {
+    this.resetOrientation();
+    this.resizeImage();
   }
 
-  resetOrientation(width, height) {
+  resetOrientation() {
+    let width = this.phantomImage.width;
+    let height = this.phantomImage.height;
     let orientation = this.state.exif.Orientation;
 
     if(orientation) {
@@ -116,23 +97,62 @@ export class NewPost extends Component {
 
       // export base64
       this.setState({
-        photo: canvas.toDataURL(),
+        photoRotatedSrc: canvas.toDataURL(),
+        fixedOrientation: true,
+        finalWidth: canvas.width,
+        finalHeight: canvas.height,
+      });
+    } else {
+
+      this.setState({
+        photoRotatedSrc: this.state.photo,
         fixedOrientation: true,
       });
     }
 
-    this.setState({
-      fixedOrientation: true,
-    });
-
   }
 
-  imageResizedCallback(img) {
+  resizeImage() {
+    let imageWidth = this.state.finalWidth
+    let imageHeight = this.state.finalHeight
 
+    // If image is larger than maxWidth
+    if (imageWidth > Meteor.settings.public.imageCompression.maxWidth) {
+      let ratio = Meteor.settings.public.imageCompression.maxWidth / imageWidth;
+      let newWidth = imageWidth * ratio;
+      let newHeight = imageHeight * ratio;
+
+      let imageCompressor = new ImageCompressor;
+
+      imageCompressor.run(this.state.photoRotatedSrc, {
+        toWidth: newWidth,
+        toHeight: newHeight,
+        mimeType:  Meteor.settings.public.imageCompression.mimeType,
+        mode: Meteor.settings.public.imageCompression.mode,
+        quality: Meteor.settings.public.imageCompression.quality,
+        speed: Meteor.settings.public.imageCompression.speed,
+      }, this.imageResizedCallback);
+
+      this.setState({
+        finalWidth: newWidth,
+        finalHeight: newHeight,
+      });
+
+    } else {
+      this.setState({
+        imageReady: true,
+        imageCompressed: this.state.photo,
+      });
+    }
+  }
+
+
+  imageResizedCallback(img) {
     // Check if rotation
     this.setState({
       imageReady: true,
       imageCompressed: img,
+      photo: img,
     });
 
   }
@@ -287,7 +307,7 @@ export class NewPost extends Component {
 
         <div className="grid-row padding-bottom-small">
           <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
-            <img className="post-image" src={this.state.photo} onLoad={this.imageOnLoad} />
+            <img className="post-image" src={this.state.photo} />
           </div>
         </div>
         <form onSubmit={this.onSubmitForm}>
