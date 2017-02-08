@@ -5,7 +5,7 @@ import { Actions } from '/imports/components/posts/Actions.jsx';
 import { AdminActions } from '/imports/components/admin/AdminActions.jsx';
 import { Caption } from '/imports/components/posts/Caption.jsx';
 import { Comments } from '/imports/components/comments/Comments.jsx';
-import { TimeAgo } from '/imports/components/posts/TimeAgo.jsx';
+import { TimeLocation } from '/imports/components/posts/TimeLocation.jsx';
 
 export class AdminPost extends Component {
   render() {
@@ -28,7 +28,7 @@ export class AdminPost extends Component {
 
         <Comments comments={this.props.post.comments} limitComments={true} postId={this.props.post._id} />
 
-        <TimeAgo createdAt={this.props.post.createdAt} />
+        <TimeLocation createdAt={this.props.post.createdAt} postId={this.props.post._id} location={this.props.post.location} />
 
       </div>
     );
