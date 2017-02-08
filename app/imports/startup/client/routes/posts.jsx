@@ -28,10 +28,19 @@ postsRoutes.route('/new', {
   },
 });
 
-postsRoutes.route('/hashtag/:hashtag', {
-  name: 'newPost',
-  action(params) {
+postsRoutes.route('/pop', {
+  name: 'pop',
+  action() {
+    mount(MainContainer, {
+      content: <FeedContainer sort={'pop'}/>,
+      headerLeftLabel: 'Pop',
+    });
+  },
+});
 
+postsRoutes.route('/hashtag/:hashtag', {
+  name: 'hashtag',
+  action(params) {
     mount(MainContainer, {
       content: <FeedContainer hashtag={params.hashtag}/>,
       headerLeftLabel: '#' + params.hashtag,
@@ -43,7 +52,6 @@ postsRoutes.route('/post/:id', {
   name: 'singlePost',
   action(params) {
     mount(MainContainer, {
-      //content: <UserLogin />,
       content: <PostContainer postId={params.id} />,
       headerLeftLabel: 'Post',
     });
@@ -54,7 +62,6 @@ postsRoutes.route('/post/:id/:scroll', {
   name: 'singlePostScroll',
   action(params) {
     mount(MainContainer, {
-      //content: <UserLogin />,
       content: <PostContainer postId={params.id} scrollTo={params.scroll} />,
     });
   },

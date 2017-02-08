@@ -33,7 +33,11 @@ function reactiveMapper(props, onData) {
   let sort = 'new';
 
   if (props.hashtag) {
-    sort = '#' + props.hashtag
+    sort = '#' + props.hashtag;
+  }
+
+  if (props.sort) {
+    sort = props.sort;
   }
 
   if (!Session.get('pagination')) {
@@ -56,20 +60,41 @@ function reactiveMapper(props, onData) {
     Meteor.subscribe('feed.newPosts', subscriptionNewPostsParams).ready() // Subscription for new posts
   ) {
 
+    let notifyNewPosts = true;
     let limit = (subscriptionParams.pagination * Meteor.settings.public.postsPerPage);
+
+    let options = {
+      sort: {
+        createdAt: -1,
+      },
+      limit,
+    };
+
+    let availablePostsOptions = {
+      sort: {
+        createdAt: -1,
+      },
+      limit,
+    };
+
+    if (props.sort === 'pop') {
+      options.sort = {
+        ranking: -1,
+      }
+
+      availablePostsOptions.sort = {
+        ranking: -1,
+      }
+
+      notifyNewPosts = false;
+    }
 
     // Posts displayed on the feed
     const posts = Posts.find({
       createdAt: {
         $lte: Session.get('feedTimestamp'),
       },
-    }, {
-      sort: {
-        createdAt: -1,
-      },
-      limit,
-    }).fetch();
-
+    }, options).fetch();
 
     // Check if theres still posts available to retrive
     // This queries for limit + 1 posts, 1 post more than the `post` query
@@ -77,12 +102,7 @@ function reactiveMapper(props, onData) {
       createdAt: {
         $lte: Session.get('feedTimestamp'),
       },
-    }, {
-      sort: {
-        createdAt: -1,
-      },
-      limit: limit + 1,
-    }).fetch().length;
+    }, availablePostsOptions).fetch().length;
 
     // Check the size of `availablePosts` minus `limit`.
     // If 1 or more, it means theres more posts available to load
@@ -96,7 +116,7 @@ function reactiveMapper(props, onData) {
       },
     }).fetch().length;
 
-    onData(null, { posts, newPosts, morePosts });
+    onData(null, { posts, newPosts, morePosts, notifyNewPosts });
   };
 
 }

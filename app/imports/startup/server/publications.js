@@ -16,16 +16,22 @@ Meteor.publish('feed.posts', function(subscriptionParams) {
     },
   }
 
-  if (/([#])/.exec(subscriptionParams.sort)) {
-    query.hashtags =  subscriptionParams.sort;
-  }
-
-  return Posts.find(query, {
+  let options = {
     sort: {
       createdAt: -1,
     },
     limit,
-  });
+  };
+
+  if (subscriptionParams.sort === 'pop') {
+    options.sort = {
+      ranking: -1,
+    }
+  } else if (/([#])/.exec(subscriptionParams.sort)) {
+    query.hashtags =  subscriptionParams.sort;
+  }
+
+  return Posts.find(query, options);
 
 });
 
