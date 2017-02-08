@@ -305,8 +305,6 @@ export class NewPost extends Component {
     return (
       <section className="container padding-bottom-small">
         <LocationNotice checking={this.state.locationChecking} approved={this.state.locationApproved} location={this.state.location} />
-        <p>{this.state.processingPhoto ? 'PROCESSING': 'DONE'}</p>
-
         <div className="grid-row padding-bottom-small">
           <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
             <img className="post-image" src={this.state.photo} />
