@@ -15,15 +15,13 @@ export class NewPost extends Component {
   constructor(props) {
     super(props);
 
-    let photo = Session.get('newPhoto');
     let fingerprint = Session.get('fingerprint');
-
-    if(photo === undefined) {
-      FlowRouter.go('home');
-    }
+    let photo = Session.get('newPhoto');
 
     this.state = {
-      photo,
+      processingPhoto: true,
+      originalPhoto: photo.image,
+      exif: photo.exif,
       fingerprint,
       locationApproved: false,
       locationChecking: true,
@@ -36,7 +34,8 @@ export class NewPost extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
-    this.imageOnLoad = this.imageOnLoad.bind(this);
+    this.startProcessing = this.startProcessing.bind(this);
+    this.processPhoto = this.processPhoto.bind(this);
     this.resizeImage = this.resizeImage.bind(this);
     this.imageResizedCallback = this.imageResizedCallback.bind(this);
 
@@ -44,44 +43,118 @@ export class NewPost extends Component {
 
   componentWillMount() {
     navigator.geolocation.getCurrentPosition(this.checkGeofence);
+    this.startProcessing();
   }
 
-  imageOnLoad(event) {
-    let phantomImage = new Image();
-    phantomImage.onload = this.resizeImage;
-    phantomImage.src = event.target.src;
+  startProcessing() {
+    let photo = Session.get('newPhoto');
+
+    if(photo.image === undefined) {
+      FlowRouter.go('home');
+    }
+
+    this.phantomImage = new Image();
+    this.phantomImage.onload = this.processPhoto;
+    this.phantomImage.src =  photo.image;
   }
 
-  resizeImage(event) {
-    let imageWidth = event.target.width;
-    let imageHeight = event.target.height;
+  processPhoto() {
+    this.resetOrientation();
+    this.resizeImage();
+  }
+
+  resetOrientation() {
+    let width = this.phantomImage.width;
+    let height = this.phantomImage.height;
+    let orientation = this.state.exif.Orientation;
+
+    if(orientation) {
+      canvas = document.createElement('canvas'),
+        ctx = canvas.getContext("2d");
+
+      // set proper canvas dimensions before transform & export
+      if ([5,6,7,8].indexOf(orientation) > -1) {
+        canvas.width = height;
+        canvas.height = width;
+      } else {
+        canvas.width = width;
+        canvas.height = height;
+      }
+
+      // transform context before drawing image
+      switch (orientation) {
+        case 2: ctx.transform(-1, 0, 0, 1, width, 0); break;
+        case 3: ctx.transform(-1, 0, 0, -1, width, height ); break;
+        case 4: ctx.transform(1, 0, 0, -1, 0, height ); break;
+        case 5: ctx.transform(0, 1, 1, 0, 0, 0); break;
+        case 6: ctx.transform(0, 1, -1, 0, height , 0); break;
+        case 7: ctx.transform(0, -1, -1, 0, height , width); break;
+        case 8: ctx.transform(0, -1, 1, 0, 0, width); break;
+        default: ctx.transform(1, 0, 0, 1, 0, 0);
+      }
+
+      // draw image
+      ctx.drawImage(this.phantomImage, 0, 0);
+
+      // export base64
+      this.setState({
+        fixedOrientation: true,
+        photoRotatedSrc: canvas.toDataURL(),
+        finalWidth: canvas.width,
+        finalHeight: canvas.height,
+      });
+    } else {
+      this.setState({
+        fixedOrientation: true,
+        photoRotatedSrc: this.state.originalPhoto,
+        finalWidth: width,
+        finalHeight: height,
+      });
+    }
+  }
+
+  resizeImage() {
+    let imageWidth = this.state.finalWidth
+    let imageHeight = this.state.finalHeight
 
     // If image is larger than maxWidth
     if (imageWidth > Meteor.settings.public.imageCompression.maxWidth) {
       let ratio = Meteor.settings.public.imageCompression.maxWidth / imageWidth;
+      let newWidth = imageWidth * ratio;
+      let newHeight = imageHeight * ratio;
 
       let imageCompressor = new ImageCompressor;
 
-      imageCompressor.run(this.state.photo, {
-        toWidth: imageWidth * ratio,
-        toHeight: imageHeight * ratio,
+      imageCompressor.run(this.state.photoRotatedSrc, {
+        toWidth: newWidth,
+        toHeight: newHeight,
         mimeType:  Meteor.settings.public.imageCompression.mimeType,
         mode: Meteor.settings.public.imageCompression.mode,
         quality: Meteor.settings.public.imageCompression.quality,
         speed: Meteor.settings.public.imageCompression.speed,
       }, this.imageResizedCallback);
+
+      this.setState({
+        finalWidth: newWidth,
+        finalHeight: newHeight,
+      });
+
     } else {
       this.setState({
         imageReady: true,
-        imageCompressed: this.state.photo,
+        imageCompressed: this.state.photoRotatedSrc,
       });
     }
   }
 
+
   imageResizedCallback(img) {
+    // Check if rotation
     this.setState({
       imageReady: true,
       imageCompressed: img,
+      photo: img,
+      processingPhoto: false,
     });
 
   }
@@ -233,10 +306,9 @@ export class NewPost extends Component {
     return (
       <section className="container padding-bottom-small">
         <LocationNotice checking={this.state.locationChecking} approved={this.state.locationApproved} location={this.state.location} />
-
         <div className="grid-row padding-bottom-small">
           <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
-            <img className="post-image" src={this.state.photo} onLoad={this.imageOnLoad} />
+            <img className="post-image" src={this.state.photo} />
           </div>
         </div>
         <form onSubmit={this.onSubmitForm}>
@@ -247,6 +319,11 @@ export class NewPost extends Component {
             </div>
           </div>
         </form>
+        {this.state.processingPhoto &&
+          <div id="upload-progress-holder" className="grid-row justify-center align-items-center">
+            <div className="grid-item item-s-12 no-gutter text-align-center font-bold animation-phase">Processing...</div>
+          </div>
+        }
         {this.state.uploading &&
           <div id="upload-progress-holder" className="grid-row justify-center align-items-center">
             <div id="upload-progress-bar" style={this.state.progressBarStyle}></div>
