@@ -14,6 +14,8 @@ export class MainLayout extends Component {
     }
 
     cookie.save('hasVisited', true, { path: '/' });
+
+    $('html, body').css('visibility', 'visible');
   }
 
   componentWillUpdate() {
