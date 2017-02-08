@@ -7,7 +7,7 @@ export const Caption = ({caption}) => {
     return null;
   }
 
-  caption = autoParagraph(caption, 'caption margin-bottom-tiny');
+  caption = autoParagraph(caption, 'caption font-bold margin-bottom-tiny');
   caption = linkHashtagsHtml(caption);
 
   return (
