@@ -20,6 +20,7 @@ export class NewPost extends Component {
 
     this.state = {
       processingPhoto: true,
+      originalPhoto: photo.image,
       exif: photo.exif,
       fingerprint,
       locationApproved: false,
@@ -97,19 +98,19 @@ export class NewPost extends Component {
 
       // export base64
       this.setState({
-        photoRotatedSrc: canvas.toDataURL(),
         fixedOrientation: true,
+        photoRotatedSrc: canvas.toDataURL(),
         finalWidth: canvas.width,
         finalHeight: canvas.height,
       });
     } else {
-
       this.setState({
-        photoRotatedSrc: this.state.photo,
         fixedOrientation: true,
+        photoRotatedSrc: this.state.originalPhoto,
+        finalWidth: width,
+        finalHeight: height,
       });
     }
-
   }
 
   resizeImage() {
@@ -141,7 +142,7 @@ export class NewPost extends Component {
     } else {
       this.setState({
         imageReady: true,
-        imageCompressed: this.state.photo,
+        imageCompressed: this.state.photoRotatedSrc,
       });
     }
   }
