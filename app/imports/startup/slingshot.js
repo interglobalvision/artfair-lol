@@ -9,7 +9,7 @@ Slingshot.fileRestrictions('imageUpload', {
 
 // Misc
 function createFilename() {
-  return Random.id(30);
+  return Random.id(30) + '.jpg';
 }
 
 // Server code
