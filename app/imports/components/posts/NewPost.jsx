@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import Hermite from '/imports/lib/hermite.js';
-
 import 'image-compressor';
 
 import { distanceFrom } from '/imports/lib/geometry.js';
@@ -74,9 +72,10 @@ export class NewPost extends Component {
   }
 
   imageResizedCallback(img) {
+    console.log('imageready');
     this.setState({
-      imageReady: img,
-      photo: img
+      imageReady: true,
+      imageCompressed: img,
     });
 
   }
@@ -124,7 +123,7 @@ export class NewPost extends Component {
 
   uploadFile() {
     const uploader = this.getSlingshotUploader();
-    const image = this.state.imageReady;
+    const image = this.state.imageCompressed;
 
     this.setState({
       'uploading': true,
@@ -168,7 +167,6 @@ export class NewPost extends Component {
     const location = this.state.location;
 
     if (error) {
-      console.log(error);
       throw new Meteor.Error('upload-file-fail', error);
 
     } else {
