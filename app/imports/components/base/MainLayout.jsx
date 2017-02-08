@@ -16,22 +16,40 @@ export class MainLayout extends Component {
     cookie.save('hasVisited', true, { path: '/' });
   }
 
+  componentWillUpdate() {
+    if (!this.state.hasVisited) {
+      this.setState({hasVisited: cookie.load('hasVisited')});
+    }
+  }
+
   render() {
-    return (
-      <div id="main-container">
-        {!this.state.hasVisited &&
-          <About />
-        }
-        <Header leftLabel={this.props.headerLeftLabel} />
-        <div id="main-content">
-          <div className="container">
-            {this.props.content}
+    if (!this.state.hasVisited) {
+      return (
+        <div id="main-container">
+          <Header leftLabel={this.props.headerLeftLabel} />
+          <div className="header-padding">
+            <About />
+          </div>
+          <div id="main-content" className="padding-top-small">
+            <div className="container">
+              {this.props.content}
+            </div>
           </div>
         </div>
-        {this.state.hasVisited &&
+      );
+    } else {
+      return (
+        <div id="main-container">
+          <Header leftLabel={this.props.headerLeftLabel} />
+          <div id="main-content" className="header-padding">
+            <div className="container">
+              {this.props.content}
+            </div>
+          </div>
           <About />
-        }
-      </div>
-    );
+        </div>
+      );
+    }
+
   }
 };
