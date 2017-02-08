@@ -47,7 +47,7 @@ export class FeedLayout extends Component {
 
     if (this.props.posts) {
       return (
-        <section id='feed'>
+        <section id='feed' className='container'>
           <NewPostsNotice newPosts={this.props.newPosts} />
           <div className='feed-posts'>
             {this.props.posts.map((post, key) => (

@@ -7,7 +7,7 @@ export class PostLayout extends Component {
   render() {
     if (this.props.post) {
       return (
-        <section id='post'>
+        <section id='post' className='container'>
           <div className='post'>
             <SinglePost post={this.props.post} scrollTo={this.props.scrollTo} />
           </div>
@@ -16,7 +16,7 @@ export class PostLayout extends Component {
     } else {
       return (
         <section id='post'>
-          <div className='post'>
+          <div className='post' className='container'>
             <h1>Nothing yet! Post some</h1>
           </div>
         </section>

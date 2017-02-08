@@ -31,9 +31,7 @@ export class MainLayout extends Component {
             <About />
           </div>
           <div id="main-content" className="padding-top-small">
-            <div className="container">
-              {this.props.content}
-            </div>
+            {this.props.content}
           </div>
         </div>
       );
@@ -42,9 +40,7 @@ export class MainLayout extends Component {
         <div id="main-container">
           <Header leftLabel={this.props.headerLeftLabel} />
           <div id="main-content" className="header-padding">
-            <div className="container">
-              {this.props.content}
-            </div>
+            {this.props.content}
           </div>
           <About />
         </div>

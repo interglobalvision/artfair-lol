@@ -179,7 +179,7 @@ export class NewPost extends Component {
 
   render() {
     return (
-      <section className="padding-bottom-small">
+      <section className="container padding-bottom-small">
         <LocationNotice checking={this.state.locationChecking} approved={this.state.locationApproved} location={this.state.location} />
 
         <div className="grid-row padding-bottom-small">

@@ -17,7 +17,7 @@ export class AdminLayout extends Component {
 
     if (this.props.posts) {
       return (
-        <section id='admin'>
+        <section id='admin' className='container admin-container'>
           <div className='admin-posts grid-row'>
           {this.props.posts.map((post, key) => (
             <AdminPost post={post} key={key} />
@@ -35,7 +35,7 @@ export class AdminLayout extends Component {
       )
     } else {
       return (
-        <section id='admin'>
+        <section id='admin' className='container admin-container'>
           <div className='admin-posts'>
             <h1>Nothing yet! Post some</h1>
           </div>
