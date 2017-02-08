@@ -23,7 +23,8 @@ export class NewPost extends Component {
     }
 
     this.state = {
-      photo,
+      photo: photo.image,
+      exif: photo.exif,
       fingerprint,
       locationApproved: false,
       locationChecking: true,
@@ -47,7 +48,7 @@ export class NewPost extends Component {
   }
 
   imageOnLoad(event) {
-    if(!this.state.rotated) {
+    if(!this.state.fixedOrientation) {
       this.phantomImage = new Image();
       this.phantomImage.onload = this.resizeImage;
       this.phantomImage.src = event.target.src;
@@ -58,7 +59,7 @@ export class NewPost extends Component {
     let imageWidth = event.target.width;
     let imageHeight = event.target.height;
 
-    this.resetOrientation(imageWidth, imageHeight, 6);
+    this.resetOrientation(imageWidth, imageHeight);
 
     // If image is larger than maxWidth
     if (imageWidth > Meteor.settings.public.imageCompression.maxWidth) {
@@ -82,44 +83,53 @@ export class NewPost extends Component {
     }
   }
 
-  resetOrientation(width, height, orientation) {
-    canvas = document.createElement('canvas'),
-      ctx = canvas.getContext("2d");
+  resetOrientation(width, height) {
+    let orientation = this.state.exif.Orientation;
 
-    // set proper canvas dimensions before transform & export
-    if ([5,6,7,8].indexOf(orientation) > -1) {
-      canvas.width = height;
-      canvas.height = width;
-    } else {
-      canvas.width = width;
-      canvas.height = height;
+    if(orientation) {
+      canvas = document.createElement('canvas'),
+        ctx = canvas.getContext("2d");
+
+      // set proper canvas dimensions before transform & export
+      if ([5,6,7,8].indexOf(orientation) > -1) {
+        canvas.width = height;
+        canvas.height = width;
+      } else {
+        canvas.width = width;
+        canvas.height = height;
+      }
+
+      // transform context before drawing image
+      switch (orientation) {
+        case 2: ctx.transform(-1, 0, 0, 1, width, 0); break;
+        case 3: ctx.transform(-1, 0, 0, -1, width, height ); break;
+        case 4: ctx.transform(1, 0, 0, -1, 0, height ); break;
+        case 5: ctx.transform(0, 1, 1, 0, 0, 0); break;
+        case 6: ctx.transform(0, 1, -1, 0, height , 0); break;
+        case 7: ctx.transform(0, -1, -1, 0, height , width); break;
+        case 8: ctx.transform(0, -1, 1, 0, 0, width); break;
+        default: ctx.transform(1, 0, 0, 1, 0, 0);
+      }
+
+      // draw image
+      ctx.drawImage(this.phantomImage, 0, 0);
+
+      // export base64
+      this.setState({
+        photo: canvas.toDataURL(),
+        fixedOrientation: true,
+      });
     }
 
-    // transform context before drawing image
-    switch (orientation) {
-      case 2: ctx.transform(-1, 0, 0, 1, width, 0); break;
-      case 3: ctx.transform(-1, 0, 0, -1, width, height ); break;
-      case 4: ctx.transform(1, 0, 0, -1, 0, height ); break;
-      case 5: ctx.transform(0, 1, 1, 0, 0, 0); break;
-      case 6: ctx.transform(0, 1, -1, 0, height , 0); break;
-      case 7: ctx.transform(0, -1, -1, 0, height , width); break;
-      case 8: ctx.transform(0, -1, 1, 0, 0, width); break;
-      default: ctx.transform(1, 0, 0, 1, 0, 0);
-    }
-
-    // draw image
-    ctx.drawImage(this.phantomImage, 0, 0);
-
-    // export base64
     this.setState({
-      photo: canvas.toDataURL(),
-      rotated: true,
+      fixedOrientation: true,
     });
 
-    return true;
   }
 
   imageResizedCallback(img) {
+
+    // Check if rotation
     this.setState({
       imageReady: true,
       imageCompressed: img,
