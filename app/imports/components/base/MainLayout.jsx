@@ -26,7 +26,7 @@ export class MainLayout extends Component {
     if (!this.state.hasVisited) {
       return (
         <div id="main-container">
-          <Header leftLabel={this.props.headerLeftLabel} />
+          <Header leftLabel={this.props.headerLeftLabel} navRoute={this.props.headerNavRoute} hashtag={this.props.headerHashtag} />
           <div className="header-padding">
             <About />
           </div>
@@ -38,7 +38,7 @@ export class MainLayout extends Component {
     } else {
       return (
         <div id="main-container">
-          <Header leftLabel={this.props.headerLeftLabel} />
+          <Header leftLabel={this.props.headerLeftLabel} navRoute={this.props.headerNavRoute} hashtag={this.props.headerHashtag} />
           <div id="main-content" className="header-padding">
             {this.props.content}
           </div>
