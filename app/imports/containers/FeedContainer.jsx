@@ -74,7 +74,7 @@ function reactiveMapper(props, onData) {
       sort: {
         createdAt: -1,
       },
-      limit,
+      limit: limit + 1,
     };
 
     if (props.sort === 'pop') {
