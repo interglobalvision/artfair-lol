@@ -10,7 +10,7 @@ import { NewComment } from '/imports/components/comments/NewComment.jsx';
 export class SinglePost extends Component {
   componentDidMount() {
     if (this.props.scrollTo !== undefined) {
-      $('html, body').stop().animate({ scrollTop: ( $('#' + this.props.scrollTo).offset().top - 100 )}, 300);
+      $('html, body').stop().animate({ scrollTop: ( $('#' + this.props.scrollTo).offset().top - 80 )}, 300);
     } else {
       $('html, body').stop().animate({ scrollTop: 0 }, 300);
     }
