@@ -157,14 +157,17 @@ export class NewPost extends Component {
       }
     }, 100);
 
+    let img = this.dataURLtoFile(image, 'photo');
+    uploader.send(img, this.handleUpload);
+  }
 
-
-    // Use fetch to convert base64 to blob
-    fetch(image)
-      .then( res => res.blob() )
-      .then( blob => {
-        uploader.send(blob, this.handleUpload);
-      });
+  dataURLtoFile(dataurl, filename) {
+    var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while(n--){
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type:mime});
   }
 
   handleUpload(error, url) {
