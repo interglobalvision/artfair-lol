@@ -44,7 +44,10 @@ export class NewPost extends Component {
   }
 
   componentWillMount() {
-    navigator.geolocation.getCurrentPosition(this.checkGeofence, this.locationUnavailable, {timeout:Meteor.settings.public.locationTimeout});
+    navigator.geolocation.getCurrentPosition(this.checkGeofence, this.locationUnavailable, {
+      timeout:Meteor.settings.public.locationTimeout,
+    });
+
     this.startProcessing();
   }
 
