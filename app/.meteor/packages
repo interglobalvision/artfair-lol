@@ -33,3 +33,4 @@ accounts-password
 meteorhacks:kadira
 force-ssl
 kadira:flow-router-ssr
+percolate:migrations

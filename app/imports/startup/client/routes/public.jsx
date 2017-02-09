@@ -8,6 +8,7 @@ import { mount } from 'react-mounter';
 
 import { MainContainer } from '/imports/containers/MainContainer.jsx';
 import { FeedContainer } from '/imports/containers/FeedContainer.jsx';
+import { Help } from '/imports/components/Help.jsx';
 import { UserLogin } from '/imports/components/user/UserLogin.jsx';
 
 const scrollToTop = () => {
@@ -28,6 +29,19 @@ publicRoutes.route('/', {
       content: <FeedContainer />,
       headerLeftLabel: 'new',
       headerNavRoute: '/pop',
+    });
+  },
+});
+
+publicRoutes.route('/help', {
+  name: 'help',
+  triggersEnter: [scrollToTop],
+  action() {
+    mount(MainContainer, {
+      //content: <UserLogin />,
+      content: <Help />,
+      headerNavRoute: '/',
+      hideHeaderCamera: true,
     });
   },
 });

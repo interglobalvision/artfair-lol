@@ -14,9 +14,10 @@ export const addComment = new ValidatedMethod({
   }).validator(),
 
   run({postId, comment}) {
-
     const commentSantized = sanitizeHtml(comment);
-    const hashtagsArray = commentSantized.match(/#\S+/g);
+    let hashtagsArray = _.compact(commentSantized.match(/#\S+/g));
+
+    hashtagsArray = _.map(hashtagsArray, hashtag => hashtag.toLowerCase());
 
     let insert = {
       $push: {

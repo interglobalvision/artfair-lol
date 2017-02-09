@@ -21,31 +21,36 @@ export const addPost = new ValidatedMethod({
   }).validator(),
 
   run({photo, fingerprint, location, caption}) {
-
-    let hashtagsArray;
-
-    if (caption !== undefined) {
-
-      // Sanitize caption
-      caption = sanitizeHtml(caption);
-
-      // Parse hastags
-      hashtagsArray = caption.match(/#\S+/g);
-    }
-
     let emptyVotes = [];
 
     let data = {
       photo,
       fingerprint,
       location,
-      caption,
       upVotes: emptyVotes,
       downVotes: emptyVotes,
     }
 
-    if (hashtagsArray) {
-      data.hashtags = hashtagsArray;
+    // If caption is present sanitize it and parse for hashtags
+    if (caption !== undefined) {
+
+      // Sanitize caption
+      let sanitizedCaption = sanitizeHtml(caption);
+
+      // Add to `data`
+      data.caption = sanitizedCaption;
+
+      // Parse hastags
+      let hashtagsArray = _.compact(sanitizedCaption.match(/#\S+/g));
+
+      // lowercase the hastags
+      hashtagsArray = _.map(hashtagsArray, hashtag => hashtag.toLowerCase());
+
+      // add hashtags to data
+      if (hashtagsArray) {
+        data.hashtags = hashtagsArray;
+      }
+
     }
 
     Posts.insert(data);

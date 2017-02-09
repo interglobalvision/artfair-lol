@@ -49,9 +49,10 @@ postsRoutes.route('/hashtag/:hashtag', {
   name: 'hashtag',
   triggersEnter: [scrollToTop],
   action(params) {
+    const hashtagLower = params.hashtag.toLowerCase();
     mount(MainContainer, {
-      content: <FeedContainer hashtag={params.hashtag}/>,
-      headerHashtag: params.hashtag,
+      content: <FeedContainer hashtag={hashtagLower}/>,
+      headerHashtag: hashtagLower,
       headerNavRoute: '/',
     });
   },
