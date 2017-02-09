@@ -17,6 +17,19 @@ Migrations.add({
   },
 });
 
+Migrations.add({
+  version: 2,
+  name: 'Make post hashtags lowercase',
+  up: function() {
+    Posts.find({}).forEach(post => { // Find ALL Posts
+      let hashtagsArray = post.hashtags;
+      let hashtagsArrayLower = _.map(hashtagsArray, function(hashtag){ return hashtag.toLowerCase(); });
+
+      Posts.update(post._id, { $set: { hashtags: hashtagsArrayLower } });
+    });
+  },
+});
+
 Meteor.startup(function() {
-	Migrations.migrateTo('1');
+	Migrations.migrateTo('2');
 });
