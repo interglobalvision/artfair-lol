@@ -19,7 +19,7 @@ export class NewPostsNotice extends Component {
     return (
       <div id='new-posts-notice' className="grid-row align-items-center">
         <div className="grid-item item-s-12 text-align-center">
-          <a onClick={this.resetFeedTimestamp}>View {this.props.newPosts} new post{this.props.newPosts > 1 ? 's' : ''}</a>
+          <button className="button button-small font-size-basic" onClick={this.resetFeedTimestamp}>View {this.props.newPosts} new post{this.props.newPosts > 1 ? 's' : ''}</button>
         </div>
       </div>
     );
