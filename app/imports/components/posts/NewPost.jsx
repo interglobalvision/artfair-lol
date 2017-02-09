@@ -25,6 +25,7 @@ export class NewPost extends Component {
       fingerprint,
       locationApproved: false,
       locationChecking: true,
+      locationUnavailable: false,
       imageReady: false,
       uploading: false
     };
@@ -34,6 +35,7 @@ export class NewPost extends Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
+    this.locationUnavailable = this.locationUnavailable.bind(this);
     this.startProcessing = this.startProcessing.bind(this);
     this.processPhoto = this.processPhoto.bind(this);
     this.resizeImage = this.resizeImage.bind(this);
@@ -42,8 +44,15 @@ export class NewPost extends Component {
   }
 
   componentWillMount() {
-    navigator.geolocation.getCurrentPosition(this.checkGeofence);
+    navigator.geolocation.getCurrentPosition(this.checkGeofence, this.locationUnavailable, {timeout:10000});
     this.startProcessing();
+  }
+
+  locationUnavailable() {
+    this.setState({
+      'locationChecking': false,
+      'locationUnavailable': true,
+    });
   }
 
   startProcessing() {
@@ -305,7 +314,7 @@ export class NewPost extends Component {
   render() {
     return (
       <section className="container padding-bottom-small">
-        <LocationNotice checking={this.state.locationChecking} approved={this.state.locationApproved} location={this.state.location} />
+        <LocationNotice checking={this.state.locationChecking} approved={this.state.locationApproved} location={this.state.location} unavailable={this.state.locationUnavailable} />
         <div className="grid-row padding-bottom-small">
           <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
             <img className="post-image" src={this.state.photo} />
