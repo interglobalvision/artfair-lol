@@ -324,7 +324,7 @@ export class NewPost extends Component {
           </div>
         }
 
-        {!this.state.processingPhoto &&
+        {!this.state.processingPhoto && this.state.locationApproved && 
           <div>
             <div className="grid-row padding-bottom-small">
               <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
