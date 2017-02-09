@@ -41,7 +41,7 @@ export const addPost = new ValidatedMethod({
       data.caption = sanitizedCaption;
 
       // Parse hastags
-      const hashtagsArray = sanitizedCaption.match(/#\S+/g);
+      const hashtagsArray = _.compact(sanitizedCaption.match(/#\S+/g));
 
       // lowercase the hastags
       hashtagsArrayLower = _.map(hashtagsArray, hashtag => hashtag.toLowerCase());

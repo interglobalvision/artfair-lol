@@ -16,7 +16,7 @@ export const addComment = new ValidatedMethod({
   run({postId, comment}) {
 
     const commentSantized = sanitizeHtml(comment);
-    const hashtagsArray = commentSantized.match(/#\S+/g);
+    const hashtagsArray = _.compact(commentSantized.match(/#\S+/g));
     const hashtagsArrayLower = _.map(hashtagsArray, hashtag => hashtag.toLowerCase());
 
     let insert = {
