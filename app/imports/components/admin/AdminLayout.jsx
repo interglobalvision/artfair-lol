@@ -17,7 +17,7 @@ export class AdminLayout extends Component {
 
     if (this.props.posts) {
       return (
-        <section id='admin' className='container admin-container'>
+        <section id='admin' className='container admin-container padding-top-small'>
           <div className='admin-posts grid-row'>
           {this.props.posts.map((post, key) => (
             <AdminPost post={post} key={key} />

@@ -7,7 +7,7 @@ export class PostLayout extends Component {
   render() {
     if (this.props.post) {
       return (
-        <section id='post' className='container'>
+        <section id='post' className='container padding-top-small'>
           <div className='post'>
             <SinglePost post={this.props.post} scrollTo={this.props.scrollTo} />
           </div>

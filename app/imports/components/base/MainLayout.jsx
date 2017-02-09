@@ -32,7 +32,7 @@ export class MainLayout extends Component {
           <div className="header-padding">
             <About />
           </div>
-          <div id="main-content" className="padding-top-small">
+          <div id="main-content">
             {this.props.content}
           </div>
         </div>

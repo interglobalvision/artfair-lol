@@ -47,7 +47,7 @@ export class FeedLayout extends Component {
 
     if (this.props.posts) {
       return (
-        <section id='feed' className='container'>
+        <section id='feed' className='container padding-top-small'>
           {this.props.notifyNewPosts &&
             <NewPostsNotice newPosts={this.props.newPosts} />
           }
