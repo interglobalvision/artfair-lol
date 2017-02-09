@@ -22,7 +22,7 @@ export const addPost = new ValidatedMethod({
 
   run({photo, fingerprint, location, caption}) {
 
-    let hashtagsArray;
+    let hashtagsArrayLower;
 
     if (caption !== undefined) {
 
@@ -30,7 +30,8 @@ export const addPost = new ValidatedMethod({
       caption = sanitizeHtml(caption);
 
       // Parse hastags
-      hashtagsArray = caption.match(/#\S+/g);
+      const hashtagsArray = caption.match(/#\S+/g);
+      hashtagsArrayLower = _.map(hashtagsArray, function(hashtag){ return hashtag.toLowerCase(); });
     }
 
     let emptyVotes = [];
@@ -44,8 +45,8 @@ export const addPost = new ValidatedMethod({
       downVotes: emptyVotes,
     }
 
-    if (hashtagsArray) {
-      data.hashtags = hashtagsArray;
+    if (hashtagsArrayLower) {
+      data.hashtags = hashtagsArrayLower;
     }
 
     Posts.insert(data);
