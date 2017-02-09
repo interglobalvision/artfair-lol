@@ -203,7 +203,7 @@ export class NewPost extends Component {
 
   uploadFile() {
     const uploader = this.getSlingshotUploader();
-    const imageBlob = this.dataURLtoBlob(this.state.imageCompressed, 'photo');
+    const imageBlob = this.dataURLtoBlob(this.state.finalImage, 'photo');
     let progress = 0;
 
     this.setState({
