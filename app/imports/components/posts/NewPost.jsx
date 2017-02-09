@@ -165,8 +165,8 @@ export class NewPost extends Component {
   }
 
   imageResizedCallback(img) {
-    this.phantomImage.src = img;
     this.optimizedImage = true;
+    this.phantomImage.src = img;
   }
 
   checkGeofence(position) {
