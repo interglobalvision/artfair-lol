@@ -18,7 +18,6 @@ export class PhotoInput extends Component {
 
   onFileInputChange(event) {
     this.passPhoto(this.input.files[0]);
-    event.target.value = '';
   }
 
   passPhoto(file) {
