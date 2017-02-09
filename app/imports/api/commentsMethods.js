@@ -14,10 +14,10 @@ export const addComment = new ValidatedMethod({
   }).validator(),
 
   run({postId, comment}) {
-
     const commentSantized = sanitizeHtml(comment);
-    const hashtagsArray = _.compact(commentSantized.match(/#\S+/g));
-    const hashtagsArrayLower = _.map(hashtagsArray, hashtag => hashtag.toLowerCase());
+    let hashtagsArray = _.compact(commentSantized.match(/#\S+/g));
+
+    hashtagsArray = _.map(hashtagsArray, hashtag => hashtag.toLowerCase());
 
     let insert = {
       $push: {
@@ -25,10 +25,10 @@ export const addComment = new ValidatedMethod({
       }
     };
 
-    if (hashtagsArrayLower) {
+    if (hashtagsArray) {
       const post = Posts.findOne(postId);
 
-      let hashtags = _.union(post.hashtags, hashtagsArrayLower)
+      let hashtags = _.union(post.hashtags, hashtagsArray)
 
       insert.$set = {
         hashtags
