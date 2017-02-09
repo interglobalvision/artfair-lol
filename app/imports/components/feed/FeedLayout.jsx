@@ -52,8 +52,8 @@ export class FeedLayout extends Component {
             <NewPostsNotice newPosts={this.props.newPosts} />
           }
           <div className='feed-posts'>
-            {this.props.posts.map((post, key) => (
-              <FeedPost post={post} key={key} />
+            {this.props.posts.map((post) => (
+              <FeedPost post={post} key={post._id} />
             ))}
           </div>
 
