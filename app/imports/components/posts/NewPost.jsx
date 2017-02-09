@@ -150,8 +150,11 @@ export class NewPost extends Component {
 
     } else {
       this.setState({
+        processingPhoto: false,
         imageReady: true,
         imageCompressed: this.state.photoRotatedSrc,
+        finalWidth: imageWidth,
+        finalHeight: imageHeight,
       });
     }
   }
@@ -162,7 +165,6 @@ export class NewPost extends Component {
     this.setState({
       imageReady: true,
       imageCompressed: img,
-      photo: img,
       processingPhoto: false,
     });
 
@@ -315,24 +317,31 @@ export class NewPost extends Component {
     return (
       <section className="container padding-bottom-small">
         <LocationNotice checking={this.state.locationChecking} approved={this.state.locationApproved} location={this.state.location} unavailable={this.state.locationUnavailable} />
-        <div className="grid-row padding-bottom-small">
-          <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
-            <img className="post-image" src={this.state.photo} />
-          </div>
-        </div>
-        <form onSubmit={this.onSubmitForm}>
-          <textarea className="comment-textarea margin-bottom-small" placeholder="Add a caption" value={this.state.caption} onChange={this.onInputChange} />
-          <div className="grid-row">
-            <div className="grid-item item-s-12 text-align-center">
-              <input className='button font-size-mid' type="submit" value="POST" disabled={this.disableElem()} />
-            </div>
-          </div>
-        </form>
+
         {this.state.processingPhoto &&
-          <div id="upload-progress-holder" className="grid-row justify-center align-items-center">
-            <div className="grid-item item-s-12 no-gutter text-align-center font-bold animation-phase">Processing...</div>
+          <div id="processing-photo-holder" className="grid-row justify-center align-items-center">
+            <div id="processing-photo" className="grid-item item-s-12 no-gutter text-align-center font-bold"><span className="animation-phase">Processing...</span></div>
           </div>
         }
+
+        {!this.state.processingPhoto &&
+          <div>
+            <div className="grid-row padding-bottom-small">
+              <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
+                <img className="post-image" src={this.state.imageCompressed} />
+              </div>
+            </div>
+            <form onSubmit={this.onSubmitForm}>
+              <textarea className="comment-textarea margin-bottom-small" placeholder="Add a caption" value={this.state.caption} onChange={this.onInputChange} />
+              <div className="grid-row">
+                <div className="grid-item item-s-12 text-align-center">
+                  <input className='button font-size-mid' type="submit" value="POST" disabled={this.disableElem()} />
+                </div>
+              </div>
+            </form>
+          </div>
+        }
+
         {this.state.uploading &&
           <div id="upload-progress-holder" className="grid-row justify-center align-items-center">
             <div id="upload-progress-bar" style={this.state.progressBarStyle}></div>
