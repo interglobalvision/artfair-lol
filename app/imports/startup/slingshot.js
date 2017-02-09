@@ -20,6 +20,8 @@ if (Meteor.isServer) {
 
     acl: 'public-read',
 
+    cdn: Meteor.settings.AWSCdn,
+
     authorize() {
       /*
       if (!this.userId) {
