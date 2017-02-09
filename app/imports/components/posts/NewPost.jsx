@@ -16,7 +16,11 @@ export class NewPost extends Component {
     super(props);
 
     let fingerprint = Session.get('fingerprint');
-    let originalImageSrc = Session.get('newPhoto');
+
+    this.originalImageSrc = Session.get('newPhoto');
+
+    this.imageOrientation = false;
+    this.optimizedImage = false;
 
     this.state = {
       fingerprint,
@@ -26,43 +30,51 @@ export class NewPost extends Component {
       uploading: false
     };
 
-    this.originalImageSrc = originalImageSrc;
-
     this.checkGeofence = this.checkGeofence.bind(this);
-
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
     this.getOrientation = this.getOrientation.bind(this);
     this.handleExif = this.handleExif.bind(this);
     this.processImage = this.processImage.bind(this);
-    this.resizeImage = this.resizeImage.bind(this);
+    this.optimizeImage = this.optimizeImage.bind(this);
     this.imageResizedCallback = this.imageResizedCallback.bind(this);
 
   }
 
   componentWillMount() {
-    navigator.geolocation.getCurrentPosition(this.checkGeofence);
-    this.rebuildFile();
+    // If image is empty redirect back to home
+    // It's unlikely to happen since we already have this condition
+    // in the router… but just in case.
+    if(this.originalImageSrc === undefined) {
+      FlowRouter.go('home');
+    } else {
+      navigator.geolocation.getCurrentPosition(this.checkGeofence);
+      this.rebuildFile();
+    }
   }
 
   rebuildFile() {
     let imageSrc = this.originalImageSrc;
-
-    if(imageSrc === undefined) {
-      FlowRouter.go('home');
-    }
 
     this.phantomImage = new Image();
     this.phantomImage.onload = this.processImage;
     this.phantomImage.src =  imageSrc;
   }
 
+  // This image is bound to `this.phantomImage.onLoad` so it runs everytime
+  // `this.phantomImage` src is changed
   processImage() {
     if(!this.imageOrientation) {
       this.getOrientation();
+    } else if(!this.optimizedImage) {
+      this.optimizeImage();
     } else {
-      this.resizeImage();
+      this.setState({
+        imageReady: true,
+        finalImage: this.phantomImage.src,
+        processingImage: false,
+      });
     }
   }
 
@@ -71,25 +83,26 @@ export class NewPost extends Component {
   }
 
   handleExif() {
-    let orientation = EXIF.getTag(this.phantomImage, "Orientation");
+    let orientation = EXIF.getTag(this.phantomImage, 'Orientation');
 
     if(orientation) {
       this.imageOrientation = orientation;
-      this.resetOrientation();
+      this.fixImageOrientation();
     } else {
       this.imageOrientation = 1;
       this.processImage();
     }
   }
 
-  resetOrientation() {
+  // Fixes images with orientation saves the result in `this.phantomImage.src`
+  fixImageOrientation() {
     let width = this.phantomImage.width;
     let height = this.phantomImage.height;
     let orientation = this.imageOrientation;
 
     if(orientation) {
       let canvas = document.createElement('canvas');
-      let ctx = canvas.getContext("2d");
+      let ctx = canvas.getContext('2d');
 
       // set proper canvas dimensions before transform & export
       if ([5,6,7,8].indexOf(orientation) > -1) {
@@ -122,42 +135,38 @@ export class NewPost extends Component {
 
   }
 
-  resizeImage() {
+  // Recompress into optimized jpg and resize when neede; saves the result in `this.phantomImage.src`
+  optimizeImage() {
     let imageWidth = this.phantomImage.width;
     let imageHeight = this.phantomImage.height;
 
-    // If image is larger than maxWidth
-    if (imageWidth > Meteor.settings.public.imageCompression.maxWidth) {
-      let ratio = Meteor.settings.public.imageCompression.maxWidth / imageWidth;
-      let newWidth = imageWidth * ratio;
-      let newHeight = imageHeight * ratio;
+    let ratio = Meteor.settings.public.imageCompression.maxWidth / imageWidth;
 
-      let imageCompressor = new ImageCompressor;
-
-      imageCompressor.run(this.phantomImage.src, {
-        toWidth: newWidth,
-        toHeight: newHeight,
-        mimeType:  Meteor.settings.public.imageCompression.mimeType,
-        mode: Meteor.settings.public.imageCompression.mode,
-        quality: Meteor.settings.public.imageCompression.quality,
-        speed: Meteor.settings.public.imageCompression.speed,
-      }, this.imageResizedCallback);
-
-      this.finalWidth = newWidth;
-      this.finalHeight = newHeight;
-
-    } else {
-      this.setState({
-        imageReady: true,
-        finalImage: this.phantomImage.src,
-        processingImage: false,
-      });
+    // If image is smaller than maxWidth set ratio to 1
+    // in order to keep image from resizing
+    if (ratio > 1) {
+      ratio = 1;
     }
-  }
 
+    let newWidth = imageWidth * ratio;
+    let newHeight = imageHeight * ratio;
+
+    let imageCompressor = new ImageCompressor;
+
+    imageCompressor.run(this.phantomImage.src, {
+      toWidth: newWidth,
+      toHeight: newHeight,
+      mimeType:  Meteor.settings.public.imageCompression.mimeType,
+      mode: Meteor.settings.public.imageCompression.mode,
+      quality: Meteor.settings.public.imageCompression.quality,
+      speed: Meteor.settings.public.imageCompression.speed,
+    }, this.imageResizedCallback);
+
+  }
 
   imageResizedCallback(img) {
     this.phantomImage.src = img;
+    this.optimizedImage = true;
   }
 
   checkGeofence(position) {
