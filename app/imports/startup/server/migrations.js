@@ -22,10 +22,13 @@ Migrations.add({
   name: 'Make post hashtags lowercase',
   up: function() {
     Posts.find({}).forEach(post => { // Find ALL Posts
-      let hashtagsArray = post.hashtags;
-      let hashtagsArrayLower = _.map(hashtagsArray, function(hashtag){ return hashtag.toLowerCase(); });
+      let hashtagsArray = _.compact(post.hashtags);
 
-      Posts.update(post._id, { $set: { hashtags: hashtagsArrayLower } });
+      if(hashtagsArray) {
+        let hashtagsArrayLower = _.map(hashtagsArray, hashtag => hashtag.toLowerCase());
+
+        Posts.update(post._id, { $set: { hashtags: hashtagsArrayLower } });
+      }
     });
   },
 });
