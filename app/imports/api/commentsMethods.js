@@ -17,6 +17,7 @@ export const addComment = new ValidatedMethod({
 
     const commentSantized = sanitizeHtml(comment);
     const hashtagsArray = commentSantized.match(/#\S+/g);
+    const hashtagsArrayLower = _.map(hashtagsArray, function(hashtag){ return hashtag.toLowerCase(); });
 
     let insert = {
       $push: {
@@ -24,10 +25,10 @@ export const addComment = new ValidatedMethod({
       }
     };
 
-    if (hashtagsArray) {
+    if (hashtagsArrayLower) {
       const post = Posts.findOne(postId);
 
-      let hashtags = _.union(post.hashtags, hashtagsArray)
+      let hashtags = _.union(post.hashtags, hashtagsArrayLower)
 
       insert.$set = {
         hashtags
