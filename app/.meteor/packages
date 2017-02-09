@@ -33,3 +33,4 @@ percolate:synced-cron
 accounts-password
 meteorhacks:kadira
 force-ssl
+percolate:migrations
