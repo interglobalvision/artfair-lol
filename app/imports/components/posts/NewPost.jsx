@@ -141,8 +141,11 @@ export class NewPost extends Component {
 
     } else {
       this.setState({
+        processingPhoto: false,
         imageReady: true,
         imageCompressed: this.state.photoRotatedSrc,
+        finalWidth: imageWidth,
+        finalHeight: imageHeight,
       });
     }
   }
@@ -153,7 +156,6 @@ export class NewPost extends Component {
     this.setState({
       imageReady: true,
       imageCompressed: img,
-      photo: img,
       processingPhoto: false,
     });
 
@@ -317,7 +319,7 @@ export class NewPost extends Component {
           <div>
             <div className="grid-row padding-bottom-small">
               <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
-                <img className="post-image" src={this.state.photo} />
+                <img className="post-image" src={this.state.imageCompressed} />
               </div>
             </div>
             <form onSubmit={this.onSubmitForm}>
