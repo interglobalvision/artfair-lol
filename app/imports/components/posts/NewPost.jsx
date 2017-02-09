@@ -320,11 +320,11 @@ export class NewPost extends Component {
 
         {this.state.processingPhoto &&
           <div id="processing-photo-holder" className="grid-row justify-center align-items-center">
-            <div id="processing-photo" className="grid-item item-s-12 no-gutter text-align-center font-bold"><span className="animation-phase">Processing...</span></div>
+            <div id="processing-photo" className="grid-item item-s-12 no-gutter text-align-center font-bold"><span className="animation-phase"><img className='notice-icon icon-small' src='/icons/paint_roller.svg' />Working...</span></div>
           </div>
         }
 
-        {!this.state.processingPhoto && this.state.locationApproved && 
+        {!this.state.processingPhoto && this.state.locationApproved &&
           <div>
             <div className="grid-row padding-bottom-small">
               <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
