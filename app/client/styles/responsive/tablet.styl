@@ -44,6 +44,17 @@ textarea
 #main-content
   min-height: "calc(100vh - %s)" % ($header-height + $about-height)
 
+#new-posts-notice
+  animation: new-posts-notice 1s 1 ease-in-out
+  height: "%s" % ($margin-small + 70px)
+  margin-top: "-%s" % $margin-small
+
+@keyframes new-posts-notice
+  from
+    height: 0
+  to
+    height: $new-posts-notice-height
+
 .comment-textarea
   padding: $margin-tiny
 
