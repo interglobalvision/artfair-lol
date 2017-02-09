@@ -19,7 +19,6 @@ ecmascript@0.6.1              # Enable ECMAScript2015+ syntax in app code
 shell-server@0.2.1            # Server-side component of the `meteor shell` command
 
 insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
-kadira:flow-router
 alanning:roles
 stylus
 aldeed:simple-schema
@@ -33,4 +32,5 @@ percolate:synced-cron
 accounts-password
 meteorhacks:kadira
 force-ssl
+kadira:flow-router-ssr
 percolate:migrations

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlowRouter } from 'meteor/kadira:flow-router';
+import { FlowRouter } from 'meteor/kadira:flow-router-ssr';
 import { mount } from 'react-mounter';
 
 import '/imports/startup/client/routes/public.jsx';

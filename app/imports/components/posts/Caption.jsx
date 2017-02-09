@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { autoParagraph, linkHashtagsHtml } from '/imports/lib/text.js';
 
 export const Caption = ({caption}) => {
-  if (caption === null) {
+  if (caption === null || caption === undefined || caption === 'undefined') {
     return null;
   }
 
