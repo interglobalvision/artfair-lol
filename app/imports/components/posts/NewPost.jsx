@@ -20,7 +20,7 @@ export class NewPost extends Component {
 
     this.state = {
       fingerprint,
-      processingPhoto: true,
+      processingImage: true,
       locationChecking: true,
       locationApproved: false,
       uploading: false
@@ -78,6 +78,7 @@ export class NewPost extends Component {
       this.resetOrientation();
     } else {
       this.imageOrientation = 1;
+      this.processImage();
     }
   }
 
@@ -147,7 +148,6 @@ export class NewPost extends Component {
 
     } else {
       this.setState({
-        processingPhoto: false,
         imageReady: true,
         finalImage: this.phantomImage.src,
         processingImage: false,
