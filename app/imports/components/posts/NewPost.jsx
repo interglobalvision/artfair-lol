@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import EXIF from 'exif-js';
 
 import 'image-compressor';
 import '/imports/lib/Blob.js';
@@ -8,7 +9,6 @@ import { distanceFrom } from '/imports/lib/geometry.js';
 import sanitizeHtml from 'sanitize-html';
 
 import { addPost } from '/imports/api/photosMethods.js';
-
 import { LocationNotice } from '/imports/components/posts/LocationNotice.jsx';
 
 export class NewPost extends Component {
@@ -16,73 +16,93 @@ export class NewPost extends Component {
     super(props);
 
     let fingerprint = Session.get('fingerprint');
-    let photo = Session.get('newPhoto');
+
+    this.originalImageSrc = Session.get('newPhoto');
+
+    this.imageOrientation = false;
+    this.optimizedImage = false;
 
     this.state = {
-      processingPhoto: true,
-      originalPhoto: photo.image,
-      exif: photo.exif,
       fingerprint,
-      locationApproved: false,
+      processingImage: true,
       locationChecking: true,
-      locationUnavailable: false,
-      imageReady: false,
+      locationApproved: false,
       uploading: false
     };
 
     this.checkGeofence = this.checkGeofence.bind(this);
-
     this.onInputChange = this.onInputChange.bind(this);
     this.onSubmitForm = this.onSubmitForm.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
-    this.locationUnavailable = this.locationUnavailable.bind(this);
-    this.startProcessing = this.startProcessing.bind(this);
-    this.processPhoto = this.processPhoto.bind(this);
-    this.resizeImage = this.resizeImage.bind(this);
+    this.getOrientation = this.getOrientation.bind(this);
+    this.handleExif = this.handleExif.bind(this);
+    this.processImage = this.processImage.bind(this);
+    this.optimizeImage = this.optimizeImage.bind(this);
     this.imageResizedCallback = this.imageResizedCallback.bind(this);
 
   }
 
   componentWillMount() {
-    navigator.geolocation.getCurrentPosition(this.checkGeofence, this.locationUnavailable, {
-      timeout:Meteor.settings.public.locationTimeout,
-    });
-
-    this.startProcessing();
-  }
-
-  locationUnavailable() {
-    this.setState({
-      'locationChecking': false,
-      'locationUnavailable': true,
-    });
-  }
-
-  startProcessing() {
-    let photo = Session.get('newPhoto');
-
-    if(photo.image === undefined) {
+    // If image is empty redirect back to home
+    // It's unlikely to happen since we already have this condition
+    // in the router… but just in case.
+    if(this.originalImageSrc === undefined) {
       FlowRouter.go('home');
+    } else {
+      navigator.geolocation.getCurrentPosition(this.checkGeofence);
+      this.rebuildFile();
     }
+  }
+
+  rebuildFile() {
+    let imageSrc = this.originalImageSrc;
 
     this.phantomImage = new Image();
-    this.phantomImage.onload = this.processPhoto;
-    this.phantomImage.src =  photo.image;
+    this.phantomImage.onload = this.processImage;
+    this.phantomImage.src =  imageSrc;
   }
 
-  processPhoto() {
-    this.resetOrientation();
-    this.resizeImage();
+  // This image is bound to `this.phantomImage.onLoad` so it runs everytime
+  // `this.phantomImage` src is changed
+  processImage() {
+    if(!this.imageOrientation) {
+      this.getOrientation();
+    } else if(!this.optimizedImage) {
+      this.optimizeImage();
+    } else {
+      this.setState({
+        imageReady: true,
+        finalImage: this.phantomImage.src,
+        processingImage: false,
+      });
+    }
   }
 
-  resetOrientation() {
-    let width = this.phantomImage.width;
-    let height = this.phantomImage.height;
-    let orientation = this.state.exif.Orientation;
+  getOrientation() {
+    EXIF.getData(this.phantomImage, this.handleExif);
+  }
+
+  handleExif() {
+    let orientation = EXIF.getTag(this.phantomImage, 'Orientation');
 
     if(orientation) {
-      canvas = document.createElement('canvas'),
-        ctx = canvas.getContext("2d");
+      this.imageOrientation = orientation;
+      this.fixImageOrientation();
+    } else {
+      this.imageOrientation = 1;
+      this.processImage();
+    }
+  }
+
+  // Fixes images with orientation saves the result in `this.phantomImage.src`
+  fixImageOrientation() {
+    let width = this.phantomImage.width;
+    let height = this.phantomImage.height;
+    let orientation = this.imageOrientation;
+
+    if(orientation) {
+      let canvas = document.createElement('canvas');
+      let ctx = canvas.getContext('2d');
 
       // set proper canvas dimensions before transform & export
       if ([5,6,7,8].indexOf(orientation) > -1) {
@@ -109,68 +129,44 @@ export class NewPost extends Component {
       ctx.drawImage(this.phantomImage, 0, 0);
 
       // export base64
-      this.setState({
-        fixedOrientation: true,
-        photoRotatedSrc: canvas.toDataURL(),
-        finalWidth: canvas.width,
-        finalHeight: canvas.height,
-      });
-    } else {
-      this.setState({
-        fixedOrientation: true,
-        photoRotatedSrc: this.state.originalPhoto,
-        finalWidth: width,
-        finalHeight: height,
-      });
+      let mimeType = Meteor.settings.public.imageCompression.mimeType;
+      this.phantomImage.src = canvas.toDataURL(mimeType, 1);
     }
+
   }
 
-  resizeImage() {
-    let imageWidth = this.state.finalWidth
-    let imageHeight = this.state.finalHeight
+  // Recompress into optimized jpg and resize when neede; saves the result in `this.phantomImage.src`
+  optimizeImage() {
+    let imageWidth = this.phantomImage.width;
+    let imageHeight = this.phantomImage.height;
 
-    // If image is larger than maxWidth
-    if (imageWidth > Meteor.settings.public.imageCompression.maxWidth) {
-      let ratio = Meteor.settings.public.imageCompression.maxWidth / imageWidth;
-      let newWidth = imageWidth * ratio;
-      let newHeight = imageHeight * ratio;
+    let ratio = Meteor.settings.public.imageCompression.maxWidth / imageWidth;
 
-      let imageCompressor = new ImageCompressor;
-
-      imageCompressor.run(this.state.photoRotatedSrc, {
-        toWidth: newWidth,
-        toHeight: newHeight,
-        mimeType:  Meteor.settings.public.imageCompression.mimeType,
-        mode: Meteor.settings.public.imageCompression.mode,
-        quality: Meteor.settings.public.imageCompression.quality,
-        speed: Meteor.settings.public.imageCompression.speed,
-      }, this.imageResizedCallback);
-
-      this.setState({
-        finalWidth: newWidth,
-        finalHeight: newHeight,
-      });
-
-    } else {
-      this.setState({
-        processingPhoto: false,
-        imageReady: true,
-        imageCompressed: this.state.photoRotatedSrc,
-        finalWidth: imageWidth,
-        finalHeight: imageHeight,
-      });
+    // If image is smaller than maxWidth set ratio to 1
+    // in order to keep image from resizing
+    if (ratio > 1) {
+      ratio = 1;
     }
-  }
 
+    let newWidth = imageWidth * ratio;
+    let newHeight = imageHeight * ratio;
+
+    let imageCompressor = new ImageCompressor;
+
+    imageCompressor.run(this.phantomImage.src, {
+      toWidth: newWidth,
+      toHeight: newHeight,
+      mimeType:  Meteor.settings.public.imageCompression.mimeType,
+      mode: Meteor.settings.public.imageCompression.mode,
+      quality: Meteor.settings.public.imageCompression.quality,
+      speed: Meteor.settings.public.imageCompression.speed,
+    }, this.imageResizedCallback);
+
+  }
 
   imageResizedCallback(img) {
-    // Check if rotation
-    this.setState({
-      imageReady: true,
-      imageCompressed: img,
-      processingPhoto: false,
-    });
-
+    this.optimizedImage = true;
+    this.phantomImage.src = img;
   }
 
   checkGeofence(position) {
@@ -216,7 +212,7 @@ export class NewPost extends Component {
 
   uploadFile() {
     const uploader = this.getSlingshotUploader();
-    const imageBlob = this.dataURLtoBlob(this.state.imageCompressed, 'photo');
+    const imageBlob = this.dataURLtoBlob(this.state.finalImage, 'photo');
     let progress = 0;
 
     this.setState({
@@ -321,7 +317,7 @@ export class NewPost extends Component {
       <section className="container padding-bottom-small">
         <LocationNotice checking={this.state.locationChecking} approved={this.state.locationApproved} location={this.state.location} unavailable={this.state.locationUnavailable} />
 
-        {this.state.processingPhoto &&
+        {this.state.processingImage &&
           <div id="processing-photo-holder" className="grid-row justify-center align-items-center">
             <div id="processing-photo" className="grid-item item-s-12 no-gutter text-align-center font-bold"><span className="animation-phase"><img className='notice-icon icon-small' src='/icons/paint_roller.svg' />Working...</span></div>
           </div>
@@ -331,7 +327,7 @@ export class NewPost extends Component {
           <div>
             <div className="grid-row padding-bottom-small">
               <div className="grid-item item-s-12 no-gutter grid-row justify-center align-items-center">
-                <img className="post-image" src={this.state.imageCompressed} />
+                <img className="post-image" src={this.state.finalImage} />
               </div>
             </div>
             <form onSubmit={this.onSubmitForm}>

@@ -17,37 +17,20 @@ export class PhotoInput extends Component {
   }
 
   onFileInputChange(event) {
-    this.getExif(this.input.files[0], this.passPhoto.bind(this));
+    this.passPhoto(this.input.files[0]);
   }
 
-  passPhoto(exif) {
+  passPhoto(file) {
     var reader = new FileReader();
 
     reader.onload = function (e) {
       const image = e.target.result;
 
-      e.target.value = '';
-
-      Session.set('newPhoto', {
-        image,
-        exif,
-      });
+      Session.set('newPhoto', image);
 
       FlowRouter.go('/new');
     };
 
-    reader.readAsDataURL(this.input.files[0]);
-  }
-
-
-  // From http://stackoverflow.com/a/32490603/2624099
-  getExif(file, callback) {
-    let reader = new FileReader();
-
-    reader.onload = function(e) {
-      callback(EXIF.readFromBinaryFile(e.target.result));
-    };
-
-    reader.readAsArrayBuffer(file);
+    reader.readAsDataURL(file);
   }
 };
