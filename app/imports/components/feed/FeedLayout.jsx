@@ -8,6 +8,10 @@ export class FeedLayout extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      paginationTriggered: false,
+    };
+
     this.handleScroll = this.handleScroll.bind(this);
   }
 
@@ -21,6 +25,14 @@ export class FeedLayout extends Component {
     this.unbindScroll();
   }
 
+  componentDidUpdate() {
+
+    this.state = {
+      paginationTriggered: false,
+    };
+
+  }
+
   bindScroll() {
     window.addEventListener("scroll", this.handleScroll);
   }
@@ -30,7 +42,19 @@ export class FeedLayout extends Component {
   }
 
   handleScroll(event) {
-    if (document.body.scrollTop + window.innerHeight === document.getElementById('main-container').clientHeight) {
+    if (this.state.paginationTriggered) {
+      return false;
+    }
+
+    let comparator;
+
+    if (document.getElementById('feed-pagination')) {
+      comparator = document.getElementById('main-container').clientHeight - (document.getElementById('about').clientHeight + document.getElementById('feed-pagination').clientHeight);
+    } else {
+      comparator = document.getElementById('main-container').clientHeight - document.getElementById('about').clientHeight;
+    }
+
+    if (document.body.scrollTop + window.innerHeight >= comparator) {
       if(this.props.morePosts) {
         setTimeout( () => {
           let pagination = Session.get('pagination') || 1;
@@ -39,6 +63,10 @@ export class FeedLayout extends Component {
       } else {
         this.unbindScroll();
       }
+
+      this.state = {
+        paginationTriggered: true,
+      };
     }
   }
 
