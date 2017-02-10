@@ -30,7 +30,7 @@ export class FeedLayout extends Component {
   }
 
   handleScroll(event) {
-    if (document.body.scrollTop + window.innerHeight === document.getElementById('main-container').clientHeight) {
+    if (document.body.scrollTop + window.innerHeight === document.getElementById('main-container').clientHeight - (document.getElementById('about').clientHeight + document.getElementById('feed-pagination').clientHeight)) {
       if(this.props.morePosts) {
         setTimeout( () => {
           let pagination = Session.get('pagination') || 1;
