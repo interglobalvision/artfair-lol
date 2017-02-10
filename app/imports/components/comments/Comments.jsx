@@ -13,7 +13,7 @@ export const Comments = ({comments, limitComments, postId}) => {
   let commentsLimit = Meteor.settings.public.commentsLimit
 
   if (limitComments && comments.length > commentsLimit) {
-    comments = comments.slice(0, commentsLimit);
+    comments = comments.slice(comments.length - commentsLimit, comments.length);
 
     moreComments = <a href={'/post/' + postId} className='font-size-small'>See all comments</a> ;
   }
