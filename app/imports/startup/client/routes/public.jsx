@@ -29,6 +29,7 @@ publicRoutes.route('/', {
       content: <FeedContainer />,
       headerLeftLabel: 'new',
       headerNavRoute: '/pop',
+      logoScrollToTop: true,
     });
   },
 });
@@ -87,7 +88,7 @@ publicRoutes.route('/unauthorized', {
   action() {
     mount(MainContainer, {
       content: <Page401 />,
-      headerNavRoute: '/pop',
+      headerNavRoute: '/',
     });
   },
 });
