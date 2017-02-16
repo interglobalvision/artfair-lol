@@ -24,6 +24,8 @@ $border-width = 1px
 $border-radius = 5px
 $border = $border-width solid
 
+$disabled-opacity = .4
+
 // ******************************************************
 
 // GRID
@@ -97,10 +99,10 @@ input, textarea
   box-sizing: border-box
   outline: 0
   &:disabled
-    opacity: .4
+    opacity: $disabled-opacity
     cursor: not-allowed
     &:hover
-      opacity: .4
+      opacity: $disabled-opacity
 
 textarea
   border-top: $border
@@ -153,6 +155,10 @@ textarea
 #add-photo-label
   cursor: pointer
 
+#add-photo-input[disabled] + #add-photo-label
+  opacity: $disabled-opacity
+  cursor: not-allowed
+
 // ******************************************************
 
 #main-content
@@ -177,7 +183,7 @@ textarea
   width: auto
 
 [data-voted=true]
-  opacity: .5
+  opacity: $disabled-opacity
 
 a.link-hashtag
   word-break: break-word
