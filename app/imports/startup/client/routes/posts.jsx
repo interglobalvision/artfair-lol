@@ -21,7 +21,7 @@ postsRoutes.route('/new', {
   name: 'newPost',
   triggersEnter: [scrollToTop],
   action() {
-    if (!Session.get('newPhoto')) {
+    if (!Session.get('newPhoto') || Meteor.settings.public.disablePosting) {
       return FlowRouter.go('/');
     }
 
