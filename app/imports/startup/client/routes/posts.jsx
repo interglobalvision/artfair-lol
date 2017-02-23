@@ -60,6 +60,7 @@ postsRoutes.route('/hashtag/:hashtag', {
 
 postsRoutes.route('/post/:id', {
   name: 'singlePost',
+  triggersEnter: [scrollToTop],
   action(params) {
     mount(MainContainer, {
       content: <PostContainer postId={params.id} />,
