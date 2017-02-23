@@ -8,16 +8,19 @@ export class PhotoInput extends Component {
 
     // Bind
     this.onFileInputChange = this.onFileInputChange.bind(this);
+    this.disablePosting = Meteor.settings.public.disablePosting;
   }
 
   render() {
     return(
-      <input id="add-photo-input" name="add-photo-input" ref={ input => { this.input = input; }} type="file" accept="image/*" capture="capture" onChange={this.onFileInputChange} />
+      <input id="add-photo-input" name="add-photo-input" ref={ input => { this.input = input; }} type="file" accept="image/*" capture="capture" onChange={this.onFileInputChange} disabled={this.disablePosting} />
     );
   }
 
   onFileInputChange(event) {
-    this.passPhoto(this.input.files[0]);
+    if (!this.disablePosting) {
+      this.passPhoto(this.input.files[0]);
+    }
   }
 
   passPhoto(file) {
